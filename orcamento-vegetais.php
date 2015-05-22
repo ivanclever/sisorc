@@ -119,7 +119,7 @@ $(function(){
         </div>
     </form>
     <?php
-    $rs_vegetais = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,orcespeciesvegetais.CodOrcEspecieVegetal ,orcespeciesvegetais.Quantidade, orcespeciesvegetais.DistanciaPlantio, orcespeciesvegetais.Observacoes,
+    $rs_vegetais = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,produtos.NomeCientifico,orcespeciesvegetais.CodOrcEspecieVegetal ,orcespeciesvegetais.Quantidade, orcespeciesvegetais.DistanciaPlantio, orcespeciesvegetais.Observacoes,
              orcespeciesvegetais.Valor, orcespeciesvegetais.Lucro, orcespeciesvegetais.Observacoes, orcespeciesvegetais.CodOrcEspecieVegetal, orcespeciesvegetais.ValorTotal, precos.Porte, 
              DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, fornecedores.Nome nomeFornecedor, precos.CodPreco, precos.Status, fornecedores.CodFornecedor
         FROM orcamentos, orcespeciesvegetais, precos, produtos, fornecedores
@@ -138,9 +138,10 @@ $(function(){
             <thead>
                 <tr>
                     <th>Nº</th>
-					<th>Produto</th>
+					<th>Nome</th>
+					<th>Nome Cient.</th>
 					<th>Fornecedor</th>
-                    <th>QTDE</th>
+                    <th>Qtde</th>
                     <th>Dist.</th>
                     <th>Porte</th>
                     <th>Valor</th>
@@ -156,16 +157,17 @@ $(function(){
                   <form id="vegetais_<?=$r_vegetais['CodOrcEspecieVegetal']?>">
 					<tr class="odd gradeX">                    
 						<td width="20"><?=$r_vegetais['CodOrcEspecieVegetal']?></td>
-						<td width="150"><a target="_blank" href="?s=precos-custo&id=<?=$r_vegetais['CodProduto']?>&preco=<?=$r_vegetais['CodPreco']?>"><?=$r_vegetais['NomePopular']?></a><? if ($r_vegetais["Status"]==0){echo "<br><pre>*Desativado*</pre>";}?></td>
-						<td width="150"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_vegetais['CodFornecedor']?>"><strong><?=$r_vegetais['nomeFornecedor']?></strong></a></td>
-						<td width="50"><input type="text" name="quantidade" id="quantidade_<?=$r_vegetais['CodOrcEspecieVegetal']?>" required value="<?=$r_vegetais['Quantidade']?>" /></td>
-						<td width="50"><input type="text" name="distancia" id="distancia_<?=$r_vegetais['CodOrcEspecieVegetal']?>" required value="<?=$r_vegetais['DistanciaPlantio']?>" /></td>
-						<td width="50"><?=$r_vegetais['Porte']?></td>
+						<td width="100"><a target="_blank" href="?s=precos-custo&id=<?=$r_vegetais['CodProduto']?>&preco=<?=$r_vegetais['CodPreco']?>"><?=$r_vegetais['NomePopular']?></a><? if ($r_vegetais["Status"]==0){echo "<br><pre>*Desativado*</pre>";}?></td>
+						<td width="100"><?=$r_vegetais['NomeCientifico']?></td>
+						<td width="120"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_vegetais['CodFornecedor']?>"><strong><?=$r_vegetais['nomeFornecedor']?></strong></a></td>
+						<td width="30"><input type="text" name="quantidade" id="quantidade_<?=$r_vegetais['CodOrcEspecieVegetal']?>" required value="<?=$r_vegetais['Quantidade']?>" /></td>
+						<td width="30"><input type="text" name="distancia" id="distancia_<?=$r_vegetais['CodOrcEspecieVegetal']?>" required value="<?=$r_vegetais['DistanciaPlantio']?>" /></td>
+						<td width="30"><?=$r_vegetais['Porte']?></td>
 						<td width="50"><input type="text" name="valor" id="valor_<?=$r_vegetais['CodOrcEspecieVegetal']?>" value="<?=sprintf('%0.2f', $r_vegetais['Valor']);?>" /></td>
-						<td width="100"><?=$r_vegetais['dataCad']?></td>
-						<td width="100"><input type="text" name="obs" id="obs_<?=$r_vegetais['CodOrcEspecieVegetal']?>" value="<?=$r_vegetais['Observacoes']?>" /></td>
-						<td width="100" id="valor_<?=$r_vegetais['CodOrcEspecieVegetal']?>">R$ <?=sprintf('%0.2f', $r_vegetais['ValorTotal']);?></td>
-						<td width="50"><input type="text" name="lucro" id="lucro_<?=$r_vegetais['CodOrcEspecieVegetal']?>" value="<?=$r_vegetais['Lucro']?>" /></td>
+						<td width="70"><?=$r_vegetais['dataCad']?></td>
+						<td width="90"><input type="text" name="obs" id="obs_<?=$r_vegetais['CodOrcEspecieVegetal']?>" value="<?=$r_vegetais['Observacoes']?>" /></td>
+						<td width="80" id="valor_<?=$r_vegetais['CodOrcEspecieVegetal']?>">R$ <?=sprintf('%0.2f', $r_vegetais['ValorTotal']);?></td>
+						<td width="30"><input type="text" name="lucro" id="lucro_<?=$r_vegetais['CodOrcEspecieVegetal']?>" value="<?=$r_vegetais['Lucro']?>" /></td>
 						<td align="center">
 							<a href="javascript:;" role="buttton" id="<?=$r_vegetais['CodOrcEspecieVegetal']?>" CodOrcamento="<?=$id?>" class="btn btn-success editVeg"> <i class="icon-ok"></i> </a>
 							<a href="action/orcamentos.php?do=excluiVegetais&id=<?=$r_vegetais['CodOrcEspecieVegetal']?>&id_orcamento=<?=$id?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i> </a>

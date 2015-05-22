@@ -38,7 +38,7 @@ if( $count >0 ) {
 if ($page > $total_pages) $page=$total_pages;
 $start = $limit*$page - $limit; // do not put $limit*($page - 1)
 if($total_pages!=0)
-    $SQL = "SELECT precos.*, produtos.NomePopular, fornecedores.Nome nomeFornecedor
+    $SQL = "SELECT precos.*, produtos.NomePopular, produtos.NomeCientifico, fornecedores.Nome nomeFornecedor
         FROM precos, produtos, tipospodas, fornecedores, cores, unidadesmedida
         WHERE precos.CodProduto = produtos. CodProduto 
         AND precos.CodTipoPoda = tipospodas.CodTipoPoda 
@@ -50,7 +50,7 @@ if($total_pages!=0)
         ORDER BY $sidx $sord LIMIT $start , $limit";
 //if($total_pages!=0) $SQL = "SELECT * FROM clientes WHERE Nome like '$searchTerm'  ORDER BY $sidx $sord LIMIT $start , $limit";
 else
-    $SQL = "SELECT precos.*, produtos.CodProduto, produtos.NomePopular, fornecedores.Nome nomeFornecedor
+    $SQL = "SELECT precos.*, produtos.CodProduto, produtos.NomePopular, produtos.NomeCientifico, fornecedores.Nome nomeFornecedor
         FROM precos, produtos, tipospodas, fornecedores, cores, unidadesmedida
         WHERE precos.CodProduto = produtos. CodProduto 
         AND precos.CodTipoPoda = tipospodas.CodTipoPoda 
@@ -85,6 +85,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     $response->rows[$i]['CodPreco']             = $row['CodPreco'];
     $response->rows[$i]['CodProduto']           = $row['CodProduto'];
     $response->rows[$i]['Produto']              = $row['NomePopular'];
+	$response->rows[$i]['NomeCient']            = $row['NomeCientifico'];
     $response->rows[$i]['Fornecedor']           = $row['nomeFornecedor'];
     $response->rows[$i]['Poda']                 = $poda;
     $response->rows[$i]['Sigla']                = $sigla;

@@ -538,7 +538,7 @@ switch ($do) {
 		}
 		$PrecoMO = sprintf('%0.2f', $PrecoMO);
 		
-		mysql_query("UPDATE orcamentos SET CustoMO= '$CustoMO', PrecoMO='$PrecoMO' WHERE CodOrcamento = '$CodOrcamento'");
+		mysql_query("UPDATE orcamentos SET CustoMO= '$CustoMO', PrecoMO='$PrecoMO', LucroMO='$LucroMO' WHERE CodOrcamento = '$CodOrcamento'");
 
  		echo $PrecoMO;
 	break;

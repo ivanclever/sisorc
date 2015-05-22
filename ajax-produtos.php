@@ -23,7 +23,7 @@ $result = mysql_query("SELECT COUNT(*) AS count
     LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
     LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
     WHERE precos.CodProduto = p.CodProduto
-    AND (p.NomePopular LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
+    AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
     GROUP BY precos.CodPreco
     ORDER BY precos.DataCadastra DESC");
 
@@ -62,7 +62,7 @@ if($total_pages!=0)
     //     GROUP BY precos.CodPreco
     //     ORDER BY $sidx $sord LIMIT $start , $limit";
 
-    $SQL = "SELECT precos.*, p.NomePopular, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
             FROM precos
             LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
             LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -70,12 +70,12 @@ if($total_pages!=0)
             LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
             LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
             WHERE precos.CodProduto = p.CodProduto
-            AND (p.NomePopular LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
+            AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
             GROUP BY precos.CodPreco
             ORDER BY $sidx $sord LIMIT $start , $limit";
 else
 
-    $SQL = "SELECT precos.*, p.NomePopular, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
         FROM precos
         LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
         LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -83,7 +83,7 @@ else
         LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
         LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
         WHERE precos.CodProduto = p.CodProduto
-        AND (p.NomePopular LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
+        AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
         GROUP BY precos.CodPreco
         ORDER BY $sidx $sord";
 
@@ -109,6 +109,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     $response->rows[$i]['CodPreco']             = $row['CodPreco'];
     $response->rows[$i]['CodProduto']           = $row['CodProduto'];
     $response->rows[$i]['Produto']              = $row['NomePopular'];
+	$response->rows[$i]['NomeCient']             = $row['NomeCientifico'];
     $response->rows[$i]['NFornecedor']           = $row['NFornecedor'];
     $response->rows[$i]['Poda']                 = $poda;
     $response->rows[$i]['Sigla']                = $sigla;

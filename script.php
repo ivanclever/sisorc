@@ -6,7 +6,7 @@ ob_implicit_flush(true);
 $rs = mysql_query("SELECT * FROM orcamentos");
 
 while($r = mysql_fetch_assoc($rs)):
-	
+	mysql_query("update sisorc.orcamentos set LucroGE=Lucro where (LucroGe is null or LucroGE=0) and CodOrcamento='$r[CodOrcamento]'");
 	/*
 	$rs_vegetais = mysql_query("SELECT CodOrcEspecieVegetal, Valor, Quantidade FROM orcespeciesvegetais WHERE CodOrcamento = '$r[CodOrcamento]'");
 
@@ -49,6 +49,7 @@ echo "id: ". $r_diversos[CodOrcDiverso]. " Valor: ". $valor . " - Quantidade: ".
 	*/
 
 	//forracoes
+	/*
 	$rs_forracoes = mysql_query("SELECT orcforracoes.CodOrcForracao, orcforracoes.Valor, orcforracoes.DistanciaPlantio, orcforracoes.QtdeM2, unidadesmedida.Sigla, precos.UnidadesPorCaixa
 		FROM orcforracoes, precos, unidadesmedida 
 		WHERE precos.CodUnidadeMedida = unidadesmedida.CodUnidadeMedida
@@ -155,6 +156,7 @@ echo "id: ". $r_diversos[CodOrcDiverso]. " Valor: ". $valor . " - Quantidade: ".
 		mysql_query("UPDATE orcforracoes SET ValorTotal='$ValorTotal' WHERE CodOrcForracao = '$r_forracoes[CodOrcForracao]'");
 
 	endwhile;
+	*/
 	echo $r[CodOrcamento];
 flush();
 endwhile;

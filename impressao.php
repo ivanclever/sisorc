@@ -4,27 +4,27 @@ require('util/conn.php');
 require('util/util.php');
 
 $id_orcamento = (int)$_GET['id_orcamento'];
+
 $rs = mysql_query("SELECT orcamentos.*, clientes.Nome nomeCliente, clientes.CPF_CNPJ, clientes.TelefoneComercial, clientes.Email
     FROM orcamentos, clientes
     WHERE orcamentos.CodCliente = clientes.CodCliente
     AND orcamentos.CodOrcamento = '$id_orcamento'");
 $r = mysql_fetch_assoc($rs);
 
-$rs_vegetais = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, orcespeciesvegetais.Quantidade, orcespeciesvegetais.DistanciaPlantio,
-     orcespeciesvegetais.Valor, orcespeciesvegetais.Lucro, orcespeciesvegetais.Observacoes, orcespeciesvegetais.CodOrcEspecieVegetal, orcespeciesvegetais.ValorTotal,  precos.Porte, 
-     DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad 
-        FROM orcamentos, orcespeciesvegetais, precos, produtos
-        WHERE orcespeciesvegetais.CodOrcamento = orcamentos.CodOrcamento
-        AND orcespeciesvegetais.CodPreco = precos.CodPreco
-        AND precos.CodProduto = produtos.CodProduto
-        AND orcamentos.CodOrcamento = '$id_orcamento'");
+$rs_vegetais = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,produtos.NomeCientifico, orcespeciesvegetais.Quantidade, orcespeciesvegetais.DistanciaPlantio,
+     orcespeciesvegetais.Valor, orcespeciesvegetais.Lucro, orcespeciesvegetais.Observacoes, orcespeciesvegetais.CodOrcEspecieVegetal, orcespeciesvegetais.ValorTotal,  precos.Porte, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad 
+        FROM orcamentos, orcespeciesvegetais, precos, produtos 
+        WHERE orcespeciesvegetais.CodOrcamento = orcamentos.CodOrcamento 
+        AND orcespeciesvegetais.CodPreco = precos.CodPreco 
+        AND precos.CodProduto = produtos.CodProduto 
+        AND orcamentos.CodOrcamento = '$id_orcamento' ORDER BY produtos.NomeCientifico ASC");
 
-$rs_forracoes = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.Valor,orcforracoes.ValorTotal, orcforracoes.Lucro, orcforracoes.Observacoes, orcforracoes.CodOrcForracao, precos.Porte, precos.DataCadastra, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad
+$rs_forracoes = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,produtos.NomeCientifico, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.Valor,orcforracoes.ValorTotal, orcforracoes.Lucro, orcforracoes.Observacoes, orcforracoes.CodOrcForracao, precos.Porte, precos.DataCadastra, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad
     FROM orcamentos, orcforracoes, precos, produtos
     WHERE orcforracoes.CodOrcamento = orcamentos.CodOrcamento
     AND orcforracoes.CodPreco = precos.CodPreco
     AND precos.CodProduto = produtos.CodProduto
-    AND orcamentos.CodOrcamento = '$id_orcamento'");
+    AND orcamentos.CodOrcamento = '$id_orcamento' ORDER BY produtos.NomeCientifico ASC");
 
 $rs_diversos = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, orcdiversos.Quantidade, orcdiversos.Valor, orcdiversos.Lucro, 
     orcdiversos.Observacoes, orcdiversos.CodOrcDiverso, unidadesmedida.Sigla, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, orcdiversos.ValorTotal
@@ -33,7 +33,7 @@ $rs_diversos = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, or
     AND orcdiversos.CodPreco = precos.CodPreco
     AND unidadesmedida.CodUnidadeMedida = precos.CodUnidadeMedida
     AND precos.CodProduto = produtos.CodProduto
-    AND orcamentos.CodOrcamento = '$id_orcamento'");
+    AND orcamentos.CodOrcamento = '$id_orcamento' ORDER BY produtos.NomeCientifico ASC");
 
 $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, orcvasos.Quantidade, orcvasos.Conteudo, orcvasos.Valor, orcvasos.ValorTotal, orcvasos.Lucro, orcvasos.CodOrcVaso, cores.Nome nomeCor, fornecedores.Nome nomeFornecedor
     FROM orcamentos, orcvasos, vasos, cores, fornecedores
@@ -41,7 +41,7 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
     AND vasos.CodVaso = orcvasos.CodVaso
     AND orcvasos.CodCor = cores.CodCor
     AND vasos.CodFornecedor = fornecedores.CodFornecedor
-    AND orcamentos.CodOrcamento = '$id_orcamento'");
+    AND orcamentos.CodOrcamento = '$id_orcamento' ORDER BY vasos.Modelo ASC");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -89,10 +89,7 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                     <div class="clearfix"></div>
 									
                                 </div>
-								 
-
-                               
-                                 <h4 class="right">
+								 <h4 class="right">
                                     <span><img src="images/logo-impressao.png" width="90" style="margin-right:25px;"  /></span>
                                 </h4>
                             </div>
@@ -115,13 +112,12 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                         <thead>
                                           <tr>
                                             <th>Produto</th>
+											<th>Nome Cient.</th>
                                             <th>QTDE</th>
-                                            <th>Dist.</th>
                                             <th>Porte</th>
-                                            <th>Data</th>
-											<th>Observacoes</th>
-                                            
-											<? if($_GET['custo']!=''): ?>
+											
+                                            <th>Observacoes</th>
+                                            <? if($_GET['custo']!=''): ?>
                                                 <th>Custo unit. </th>
 												<th>Custo Total</th>
                                             <? endif; ?>
@@ -135,10 +131,10 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                             <?php while ($r_vegetais = mysql_fetch_assoc($rs_vegetais)): ?>
                                             <tr class="odd gradeX">
                                                 <td width="100"><?=$r_vegetais['NomePopular']?></td>
+												<td width="100"><?=$r_vegetais['NomeCientifico']?></td>
                                                 <td width="30"><?=$r_vegetais['Quantidade']?></td>
-                                                <td width="30"><?=$r_vegetais['DistanciaPlantio']?></td>
-                                                <td width="30"><?=$r_vegetais['Porte']?></td>
-                                                <td width="70"><?=$r_vegetais['dataCad']?></td>
+												<td width="30"><?=$r_vegetais['Porte']?></td>
+                                                
                                                 <td width="100"><?=$r_vegetais['Observacoes']?></td>
                                                 <? if($_GET['custo']!=''): ?>
 													<td width="80">R$ <?=sprintf('%0.2f',$r_vegetais['Valor']);?></td>
@@ -149,6 +145,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_vegetais['Lucro'] / 100.0;
 															$Preco   = $r_vegetais['Valor'] + ($perc * $r_vegetais['Valor']);
+															
+															$perc    = $r['LucroEspeciesVegetais'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -156,6 +159,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_vegetais['Lucro'] / 100.0;
                                                             $Preco   = $r_vegetais['ValorTotal'] + ($perc * $r_vegetais['ValorTotal']);
+															
+															$perc    = $r['LucroEspeciesVegetais'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -173,18 +183,19 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                         <thead>
                                           <tr>
                                             <th>Produto</th>
+											<th>Nome Cient.</th>
                                             <th>QTDE M²</th>
                                             <th>Distancia</th>
-                                            <th>QTDE CX/MD</th>
+                                            <th>Qtde itens</th>
                                             <th>Porte</th>
-                                            <th>Data</th>
+                                            
                                             <th>Obs</th>
                                             <? if($_GET['custo']!=''): ?>
-                                                <th>Custo unit. </th>
+                                                <th>Custo m2. </th>
 												<th>Custo Total</th>
                                             <? endif; ?>
                                             <? if($_GET['preco']!=''): ?>
-                                                <th>Preço unit.</th>
+                                                <th>Preço m2.</th>
 												<th>Preço Total</th>
                                             <? endif; ?>
                                           </tr>
@@ -193,28 +204,34 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                             <?php while ($r_forracoes = mysql_fetch_assoc($rs_forracoes)): ?>
                                             <tr class="odd gradeX">
                                                 <td width="120"><?=$r_forracoes['NomePopular']?></td>
+												<td width="100"><?=$r_forracoes['NomeCientifico']?></td>
                                                 <td width="50"><?=$r_forracoes['QtdeM2']?></td>
                                                 <td width="50"><?=$r_forracoes['DistanciaPlantio']?></td>
                                                 <td width="100"><?=$r_forracoes['QtdeCaixasMudas']?></td>
                                                 <td width="70"><?=$r_forracoes['Porte']?></td>
-                                                <td width="80"><?=$r_forracoes['dataCad']?></td>
                                                 <td width="100"><?=$r_forracoes['Observacoes']?></td>
                                                 <? if($_GET['custo']!=''): ?>
-                                                    <td width="80">R$ <?=sprintf('%0.2f',$r_forracoes['Valor'])?></td>
+                                                    <td width="80">R$ <?=sprintf('%0.2f',$r_forracoes['ValorTotal']/$r_forracoes['QtdeM2'])?></td>
                                                     <td width="80">R$ <?=sprintf('%0.2f', $r_forracoes['ValorTotal']);?></td>
                                                 <? endif; ?>
                                                 <? if($_GET['preco']!=''): ?>
                                                     <td width="80">
                                                         <?php
                                                             $perc    = $r_forracoes['Lucro'] / 100.0;
-															$Preco   = $r_forracoes['Valor'] + ($perc * $r_forracoes['Valor']);
-															echo "R$ ".sprintf('%0.2f', $Preco);
+															$Preco   = $r_forracoes['ValorTotal'] + ($perc * $r_forracoes['ValorTotal']);
+															
+															$perc    = $r['LucroForracoes'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															
+															echo "R$ ".sprintf('%0.2f',$Preco/$r_forracoes['QtdeM2']);
                                                         ?>
                                                     </td>
 													<td width="80">
                                                         <?php
-                                                            $perc    = $r_forracoes['Lucro'] / 100.0;
-                                                            $Preco   = $r_forracoes['ValorTotal'] + ($perc * $r_forracoes['ValorTotal']);
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -231,10 +248,9 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                     <table class="responsive table table-bordered">
                                         <thead>
                                           <th>Produto</th>
+										  
                                             <th>QTDE</th>
                                             <th>UNIDADE</th>
-                                            
-                                            <th>Data</th>
                                             <th>Obs</th>
                                            <? if($_GET['custo']!=''): ?>
                                                 <th>Custo unit. </th>
@@ -249,10 +265,9 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                           <?php while ($r_diversos = mysql_fetch_assoc($rs_diversos)): ?>
                                             <tr class="odd gradeX">
                                                 <td width="100"><?=$r_diversos['NomePopular']?></td>
-                                                <td width="100"><?=$r_diversos['Quantidade']?></td>
+                                               
+												<td width="100"><?=$r_diversos['Quantidade']?></td>
                                                 <td width="50"><?=$r_diversos['Sigla']?></td>
-                                                
-                                                <td width="100"><?=$r_diversos['dataCad']?></td>
                                                 <td width="150"><?=$r_diversos['Observacoes']?></td>
                                                 <? if($_GET['custo']!=''): ?>
                                                     <td width="70"><?=sprintf('%0.2f',$r_diversos['Valor']);?></td>
@@ -263,6 +278,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_diversos['Lucro'] / 100.0;
 															$Preco   = $r_diversos['Valor'] + ($perc * $r_diversos['Valor']);
+															
+															$perc    = $r['LucroDiversos'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -270,6 +292,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_diversos['Lucro'] / 100.0;
                                                             $Preco   = $r_diversos['ValorTotal'] + ($perc * $r_diversos['ValorTotal']);
+															
+															$perc    = $r['LucroDiversos'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -320,6 +349,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_vasos['Lucro'] / 100.0;
 															$Preco   = $r_vasos['Valor'] + ($perc * $r_vasos['Valor']);
+															
+															$perc    = $r['LucroVasos'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>
@@ -327,6 +363,13 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                                         <?php
                                                             $perc    = $r_vasos['Lucro'] / 100.0;
                                                             $Preco   = $r_vasos['ValorTotal'] + ($perc * $r_vasos['ValorTotal']);
+															
+															$perc    = $r['LucroVasos'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
+															$perc    = $r['LucroGE'] / 100.0;
+															$Preco   = $Preco + ($perc * $Preco);
+															
 															echo "R$ ".sprintf('%0.2f', $Preco);
                                                         ?>
                                                     </td>

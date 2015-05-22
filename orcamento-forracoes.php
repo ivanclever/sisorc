@@ -145,7 +145,7 @@ $(function(){
     <br />
     <strong>Produtos:</strong>
     <?php
-    $rs_forracoes = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, orcforracoes.CodOrcForracao, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.quantidade_mudas_m2,
+    $rs_forracoes = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,produtos.NomeCientifico, orcforracoes.CodOrcForracao, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.quantidade_mudas_m2,
         orcforracoes.Valor,orcforracoes.ValorTotal, orcforracoes.Lucro, orcforracoes.Observacoes, orcforracoes.CodOrcForracao, precos.Porte, precos.DataCadastra,
         DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, fornecedores.Nome nomeFornecedor, fornecedores.CodFornecedor, unidadesmedida.Sigla, precos.UnidadesPorCaixa, precos.CodPreco
         FROM orcamentos, orcforracoes, precos, unidadesmedida, produtos, fornecedores
@@ -154,13 +154,14 @@ $(function(){
         AND precos.CodProduto = produtos.CodProduto
         AND precos.CodFornecedor = fornecedores.CodFornecedor
         AND precos.CodUnidadeMedida = unidadesmedida.CodUnidadeMedida
-        AND orcamentos.CodOrcamento = '$id' ORDER BY CodOrcForracao DESC");
+        AND orcamentos.CodOrcamento = '$id' ORDER BY produtos.NomeCientifico ASC");
     ?>
     <table cellpadding="0" cellspacing="0" border="0" class="responsive dynamicTable display table table-bordered" width="100%">
         <thead>
             <tr>
                 <th>Nº</th>
-				<th>Produto</th>
+				<th>Nome</th>
+				<th>Nome Cient.</th>
                 <th>Fornecedor</th>
                 <th>QTDE M²</th>
                 <th>Dist.</th>
@@ -183,19 +184,20 @@ $(function(){
             <form id="forracoes_<?=$r_forracoes['CodOrcForracao']?>">
                 <tr class="odd gradeX">
                     <td width="20"><?=$r_forracoes['CodOrcForracao']?></td>
-					<td width="120"><a target="_blank" href="?s=precos-custo&id=<?=$r_forracoes['CodProduto']?>&preco=<?=$r_forracoes['CodPreco']?>"><?=$r_forracoes['NomePopular']?></a></td>
+					<td width="100"><a target="_blank" href="?s=precos-custo&id=<?=$r_forracoes['CodProduto']?>&preco=<?=$r_forracoes['CodPreco']?>"><?=$r_forracoes['NomePopular']?></a></td>
+					<td width="100"><?=$r_forracoes['NomeCientifico']?></td>
                     <td width="100"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_forracoes['CodFornecedor']?>"><strong><?=$r_forracoes['nomeFornecedor']?></strong></a></td>
-                    <td width="100"><input type="text" name="quantidade" id="quantidade_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['QtdeM2']?>" /></td>
-                    <td width="50"><input type="text" name="distancia" id="distancia_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['DistanciaPlantio']?>" /></td>
-                    <td width="50"><?=$r_forracoes['QtdeCaixasMudas']?></td>
-                    <td width="100" id="unidade_<?=$r_forracoes['CodOrcForracao']?>"><?=$r_forracoes['Sigla']?></td>
-					<td width="50"><?=$r_forracoes['Porte']?></td>
-                    <td width="50"><input type="text" name="valor" id="valor_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=sprintf('%0.2f', $r_forracoes['Valor']);?>" /></td>
-					<td width="50"><input type="text" name="qm2" id="qm2_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['quantidade_mudas_m2']?>" /></td>
+                    <td width="30"><input type="text" name="quantidade" id="quantidade_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['QtdeM2']?>" /></td>
+                    <td width="30"><input type="text" name="distancia" id="distancia_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['DistanciaPlantio']?>" /></td>
+                    <td width="30"><?=$r_forracoes['QtdeCaixasMudas']?></td>
+                    <td width="20" id="unidade_<?=$r_forracoes['CodOrcForracao']?>"><?=$r_forracoes['Sigla']?></td>
+					<td width="30"><?=$r_forracoes['Porte']?></td>
+                    <td width="40"><input type="text" name="valor" id="valor_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=sprintf('%0.2f', $r_forracoes['Valor']);?>" /></td>
+					<td width="30"><input type="text" name="qm2" id="qm2_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['quantidade_mudas_m2']?>" /></td>
                     <td width="70"><?=$r_forracoes['dataCad']?></td>
-                    <td width="100"><input type="text" name="obs" id="obs_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Observacoes']?>" /></td>
+                    <td width="80"><input type="text" name="obs" id="obs_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Observacoes']?>" /></td>
                     <td width="70" id="valor_<?=$r_forracoes['CodOrcForracao']?>"><strong>R$ <?=sprintf('%0.2f', $r_forracoes['ValorTotal']);?></strong></td>
-                    <td width="50"><input type="text" name="lucro" id="lucro_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Lucro']?>" /></td>
+                    <td width="30"><input type="text" name="lucro" id="lucro_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Lucro']?>" /></td>
                     <td align="center">
                         <a href="javascript:;" role="buttton" id="<?=$r_forracoes['CodOrcForracao']?>" CodOrcamento="<?=$id?>" class="btn btn-success editFor"> <i class="icon-ok"></i> </a>
                         <a href="action/orcamentos.php?do=excluiForracoes&id=<?=$r_forracoes['CodOrcForracao']?>&id_orcamento=<?=$id?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i> </a>

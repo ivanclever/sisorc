@@ -285,7 +285,7 @@ $(function(){
                     
                         <div class="span3">
                             <div class="row-fluid">
-                                <label class="form-label span6" for="unidades">Unidades:</label>
+                                <label class="form-label span6" for="unidades">Unid. Caixa:</label>
                                 <input class="span6" type="text" id="unidades" name="unidades" value="<?=$_SESSION['precos']['unidades']?>" />
                             </div>
                         </div>
@@ -332,7 +332,7 @@ $(function(){
                             <th>Diam. Copa</th>
                             <th>Diam. Tronco</th>
                             <th>Alt. Tronco</th>
-                            <th>Unidades</th>
+                            <th>Unid. Caixa</th>
                             <th>Data</th>
                             <th>Valor</th>
 							<th>Ações</th>

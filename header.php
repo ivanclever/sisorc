@@ -3,9 +3,10 @@
     <div class="navbar">
         <div class="navbar-inner">
           <div class="container-fluid">
-            <a class="brand" href="./" style="color:#679000;"><img src="images/logo-impressao.png" height="50" width="50" style="margin-right:25px;"  /></a>
+            
             <div class="nav-no-collapse">
-                <ul class="nav">
+				<a class="brand" href="./" style="color:#679000; float:right;"><img src="images/logo-impressao.png" height="50" width="50" /></a>               
+			   <ul class="nav">
                     <li><a href="./"><span class="icon16 icomoon-icon-screen-2"></span> Home</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -42,11 +43,12 @@
                     </li>
                 </ul>
 
-                <ul class="nav pull-right usernav">
+                <!-- 
+				<ul class="nav pull-right usernav">
                     
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- <img src="images/icon-app-f.png" alt="" class="image" />  -->
+                            <img src="images/icon-app-f.png" alt="" class="image" />
                             <span class="txt"><?=$usuario['nome']?></span>
                             <b class="caret"></b>
                         </a>
@@ -63,11 +65,18 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- <li><a href="?s=sair"><span class="icon16 icomoon-icon-exit"></span> Sair</a></li>-->
+					
+					
+                    <li><a href="?s=sair"><span class="icon16 icomoon-icon-exit"></span> Sair</a></li>
                 </ul>
+				-->
+				
             </div><!-- /.nav-collapse -->
-          </div>
+          
+		  </div>
+		  
         </div><!-- /navbar-inner -->
-      </div><!-- /navbar --> 
+      
+	  </div><!-- /navbar --> 
 
 </div><!-- End #header -->
