@@ -149,6 +149,7 @@ $(function(){
 			
 			$('td#dataA_'+id).html(data_atualizada);
 			
+			location.href="?s=precos-custo&id="+<?php echo $id;?>;
 			
 			
         });

@@ -69,7 +69,8 @@ if($total_pages!=0)
             LEFT JOIN tipospodas AS t ON t.CodTipoPoda = precos.CodTipoPoda
             LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
             LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
-            WHERE precos.CodProduto = p.CodProduto
+            WHERE precos.CodProduto = p.CodProduto 
+			AND precos.Status = 1 
             AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
             GROUP BY precos.CodPreco
             ORDER BY $sidx $sord LIMIT $start , $limit";
@@ -83,7 +84,8 @@ else
         LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
         LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
         WHERE precos.CodProduto = p.CodProduto
-        AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%')
+        AND (p.NomePopular LIKE '%$searchTerm%' OR p.NomeCientifico LIKE '%$searchTerm%' OR p.Codigo LIKE '%$searchTerm%') 
+		AND precos.Status = 1 
         GROUP BY precos.CodPreco
         ORDER BY $sidx $sord";
 
