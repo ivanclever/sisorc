@@ -3,6 +3,7 @@ $(function(){
     $('.editDiv').click(function(){
         var id = $(this).attr('id');
         var quantidade = $('#quantidade_'+id).val();
+		quantidade = quantidade.replace(/,/g, '.');
         var valor = $('#valor_'+id).val();
         var lucro = $('#lucro_'+id).val();
         var obs = $('#obs_'+id).val();
@@ -18,7 +19,7 @@ $(function(){
             'obs': obs
         },
         function(retorno){
-            $('td#valor_'+id).html("R$ " + retorno);
+            $('td#valortotal_'+id).html("R$ " + retorno);
 			alert("Produto alterado com sucesso");
         });
     });
@@ -33,7 +34,7 @@ $(function(){
             <div class="span4" style="margin-left:40px;">
                 <div class="row-fluid">
                     <label class="form-label span4" for="titulo">Título</label>
-                    <input class="span8" id="titulo" type="text" name="titulo" value="<?=$r['TituloDiversos']?>" />
+                    <input class="span8" id="titulo" type="text" name="titulo" value="<?php if (!isset($r['TituloDiversos']) || $r['TituloDiversos']==""){echo "Diversos";}else{echo $r['TituloDiversos'];}?>" />
                 </div>
             </div>
             <div class="span3">
@@ -107,7 +108,7 @@ $(function(){
         </div>
     </form>
     <?php
-    $rs_diversos = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular, orcdiversos.CodOrcDiverso, orcdiversos.Quantidade, orcdiversos.Valor, orcdiversos.Lucro, 
+    $rs_diversos = mysql_query("SELECT produtos.CodProduto,produtos.Codigo, produtos.NomePopular, produtos.NomeCientifico, orcdiversos.CodOrcDiverso, orcdiversos.Quantidade, orcdiversos.Valor, orcdiversos.Lucro, 
         orcdiversos.Observacoes, orcdiversos.CodOrcDiverso, unidadesmedida.Sigla, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, orcdiversos.ValorTotal,
         fornecedores.Nome nomeFornecedor, precos.CodPreco
         FROM orcamentos, orcdiversos, precos, produtos, unidadesmedida, fornecedores
@@ -128,7 +129,8 @@ $(function(){
             <thead>
                 <tr>
 					<th>No</th>
-                    <th>Produto</th>
+					<th>Codigo</th>
+					<th>Nome Pop.</th>
                     <th>Fornecedor</th>
                     <th>QTDE</th>
                     <th>UN</th>
@@ -144,16 +146,17 @@ $(function(){
                 <?php while ($r_diversos = mysql_fetch_assoc($rs_diversos)): ?>
                 <form id="diversos_<?=$r_diversos['CodOrcDiverso']?>">
                 <tr class="odd gradeX">
-                    <td width="20"><?=$r_diversos['CodOrcDiverso']?></td>
-					<td width="150"><a target="_blank" href="?s=precos-custo&id=<?=$r_diversos['CodProduto']?>&preco=<?=$r_diversos['CodPreco']?>"><?=$r_diversos['NomePopular']?></a></td>
-                    <td width="150"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_diversos['CodFornecedor']?>"><strong><?=$r_diversos['nomeFornecedor']?></strong></a></td>
-                    <td width="100"><input type="text" name="quantidade" id="quantidade_<?=$r_diversos['CodOrcDiverso']?>" required value="<?=$r_diversos['Quantidade']?>" /></td>
-                    <td width="50"><?=$r_diversos['Sigla']?></td>
-                    <td width="100"><input type="text" name="valor" id="valor_<?=$r_diversos['CodOrcDiverso']?>" value="<?=sprintf('%0.2f', $r_diversos['Valor']);?>" /></td>
-                    <td width="150"><?=$r_diversos['dataCad']?></td>
+                    <td width="20"><?php echo $r_diversos['CodOrcDiverso'];?></td>
+					<td width="120"><input type="text" name="divnomecient" class="itemorcbusca"  id="itemorcbusca_<?=$r_diversos['CodOrcDiverso'].'_diversos'?>" value="<?=$r_diversos['Codigo']?>"></td>
+					<td width="180"><a href="?s=precos-custo&id=<?=$r_diversos['CodProduto']?>&preco=<?=$r_diversos['CodPreco']?>"><?=$r_diversos['NomePopular']?></a></td>
+                    <td width="150"><a href="?s=fornecedores-edit&id=<?=$r_diversos['CodFornecedor']?>"><strong><?=$r_diversos['nomeFornecedor']?></strong></a></td>
+                    <td width="30"><input type="text" name="quantidade" id="quantidade_<?=$r_diversos['CodOrcDiverso']?>" required value="<?=$r_diversos['Quantidade']?>" /></td>
+                    <td width="30"><?=$r_diversos['Sigla']?></td>
+                    <td width="40"><input type="text" name="valor" id="valor_<?=$r_diversos['CodOrcDiverso']?>" value="<?=sprintf('%0.2f', $r_diversos['Valor']);?>" /></td>
+                    <td width="70"><?=$r_diversos['dataCad']?></td>
                     <td width="100"><input type="text" name="obs" id="obs_<?=$r_diversos['CodOrcDiverso']?>" value="<?=$r_diversos['Observacoes']?>" /></td>
-                    <td width="100" id="valor_<?=$r_diversos['CodOrcDiverso']?>">R$ <?=sprintf('%0.2f', $r_diversos['ValorTotal']);?></td>
-                    <td width="50"><input type="text" name="lucro" id="lucro_<?=$r_diversos['CodOrcDiverso']?>" value="<?=$r_diversos['Lucro']?>" /></td>
+                    <td width="100" id="valortotal_<?=$r_diversos['CodOrcDiverso']?>">R$ <?=sprintf('%0.2f', $r_diversos['ValorTotal']);?></td>
+                    <td width="30"><input type="text" name="lucro" id="lucro_<?=$r_diversos['CodOrcDiverso']?>" value="<?=$r_diversos['Lucro']?>" /></td>
                     <td align="center">
                         <a href="javascript:;" role="buttton" id="<?=$r_diversos['CodOrcDiverso']?>" CodOrcamento="<?=$id?>" class="btn btn-success editDiv"> <i class="icon-ok"></i> </a> 
                         <a href="action/orcamentos.php?do=excluiDiversos&id=<?=$r_diversos['CodOrcDiverso']?>&id_orcamento=<?=$id?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i> </a>

@@ -80,6 +80,17 @@ function LimpaPonto($var) {
 	$var = str_replace(".","",$var);
 	return $var;
 }
+
+function LimpaPontoRetornaFloat($var) {
+	$var = strtolower($var);
+	$var = str_replace("-","",$var);
+	$var = str_replace(".","",$var);
+	$var = str_replace(",",".",$var);
+	//$var = str_replace(".","",$var);
+	$var = sprintf('%0.2f', $var);
+	return $var;
+}
+
 function old_Normaliza($string){
     $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
     $b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';

@@ -1,3 +1,6 @@
+<?php
+$cq = mysql_query("SELECT * FROM cidades order by Nome asc");
+?>
 <div class="row-fluid">
     <div class="span12">
         <div class="box">
@@ -130,6 +133,15 @@
                             </div>
                         </div>
                     </div>
+					
+					 <div class="form-row row-fluid">
+                        <div class="span12">
+                            <div class="row-fluid">
+                                <label class="form-label span2" for="produtos">Produtos:</label>
+                                <input class="span8 produtos" id="produtos" type="text" name="produtos" value="<?=$_SESSION['fornecedores']['produtos']?>" />
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-row row-fluid">
                         <div class="span12">
@@ -186,13 +198,27 @@
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span3" style="margin-left:78px">
+                        <div class="span12">
                             <div class="row-fluid">
-                                <label class="form-label span4" for="bairro">Bairro:</label>
+                                <label class="form-label span2" for="bairro">Bairro:</label>
                                 <input class="span8" id="bairro" type="text" name="bairro" value="<?=$r['Bairro']?>" />
                             </div>
                         </div>
                     </div>
+					
+					<div class="form-row row-fluid">
+						<div class="span3" style="margin-left:78px">
+							<div class="row-fluid">
+								<label class="form-label span4" for="cidade">Cidade:</label>
+								<select name="cidade" id="cidade" class="span4">
+                                  <option value="">Selecione</option>
+									<?php while ($rc = mysql_fetch_assoc($cq)): ?>
+											<option value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
+                                        <?php endwhile ?>
+                                    </select>
+							</div>
+						</div>
+					</div>
 
                     <div class="form-row row-fluid">
                         <div class="span12">

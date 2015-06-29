@@ -5,16 +5,24 @@ $rs = mysql_query("SELECT orcamentos.*, clientes.Nome nomeCliente FROM orcamento
 $r = mysql_fetch_assoc($rs);
 ?>
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/maskpreco.js"></script>
 <script type="text/javascript">
 
 function atualizaOrcamento(id){
-	window.location.href= "action/orcamentos.php?do=refresh&id=" + id + "&do=refresh&obra=" + $('#obra').val() + "&job=" + $('#job').val() + "&lucro=" + $('#LucroGE').val();
+	var conf = confirm("Atenção: você irá atualizar todos os valores deste orçamento com os preços mais atuais. Deseja continuar?");
+	if (conf){
+		window.location.href= "action/orcamentos.php?do=refresh&id=" + id + "&do=refresh&obra=" + $('#obra').val() + "&job=" + $('#job').val() + "&lucro=" + $('#LucroGE').val();
+	}
+} 
+
+function editaOrcamento(id){
+	var conf = confirm("Confirma a alteração dos dados do orçamento?");
+	if (conf){
+		window.location.href= "action/orcamentos.php?do=edita_infos&id=" + id + "&obra=" + $('#obra').val() + "&job=" + $('#job').val() + "&lucro=" + $('#LucroGE').val();
+	}
 } 
 		
 $(function(){
-
-		  
-			
 	$('#produto_vegetais').click(function(){
         if($('#produto_busca').is(':checked')) {
             $('#produto_vegetais').combogrid({
@@ -24,9 +32,10 @@ $(function(){
                 debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
-					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
-                    {'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+					{'columnName':'Codigo','width':'5','label':'Codigo'},
+                    {'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
+					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
                     {'columnName':'Porte','width':'5','label':'Porte'},
@@ -53,9 +62,10 @@ $(function(){
 				debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
+                    {'columnName':'Codigo','width':'5','label':'Codigo'},
 					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
-                    {'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
+					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
                     {'columnName':'Porte','width':'5','label':'Porte'},
@@ -75,6 +85,58 @@ $(function(){
             });
         }
     });
+	
+	$(".itemorcbusca").click(function(){
+		//alert($(this).attr('id'));
+		var arraysplit = $(this).attr('id').split("_");
+		var itemid = arraysplit[1];
+		var tipo = arraysplit[2]
+		//alert(itemid);	
+		//alert($(this).attr('id'));
+		$('#'+$(this).attr('id')).combogrid({
+			url: 'ajax-produtos.php',
+			sidx: 'DataCadastra',
+			sord: 'desc',
+			debug:false,
+			colModel: [
+				{'columnName':'DataCadastra','width':'7','label':'Data'},
+				{'columnName':'Codigo','width':'5','label':'Codigo'},
+				{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+				{'columnName':'Produto','width':'15','label':'Nome Popular'},
+				{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+				//{'columnName':'Poda','width':'10','label':'Poda'},
+				{'columnName':'Sigla','width':'5','label':'Un'},
+				{'columnName':'Porte','width':'5','label':'Porte'},
+				{'columnName':'Diametro','width':'10','label':'Diam. Tr'},
+				{'columnName':'Altura','width':'5','label':'Alt. Tr'},
+				{'columnName':'Valor','width':'5','label':'R$'},
+				{'columnName':'Unidades','width':'5','label':'Un. Cx'},
+				{'columnName':'Cor','width':'5','label':'Cor'},
+				],
+				select: function( event, ui ) {
+					$.post('action/orcamentos.php',
+					{
+						'do': 'AlteraItemOrcamento',
+						'tipo': tipo,
+						'CodOrcamento': <?=$_GET['id']?>,
+						'quantidade':$('#quantidade_'+itemid).val(),
+						'id': itemid,
+						'novocodpreco':ui.item.CodPreco,
+						'novovalor': ui.item.Valor
+					},
+					function(retorno){
+						//$('#valor_'+itemid).html(ui.item.Valor);
+						$('#valortotal_'+itemid).html(retorno);
+						//alert("Produto alterado com sucesso, a página será atualizada");
+						window.location.hash = "#"+tipo;
+						location.reload();
+					});
+				//return false;
+			}
+		});
+	});
+	
+	
 
     $('#produto_forracoes').click(function(){
         if($('#produto_busca').is(':checked')) {
@@ -85,9 +147,10 @@ $(function(){
                 debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
-                    {'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
-					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+                    {'columnName':'Codigo','width':'5','label':'Codigo'},
+					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
+                    {'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
                     {'columnName':'Porte','width':'5','label':'Porte'},
@@ -115,9 +178,10 @@ $(function(){
                 debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
-                    {'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
-					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+                    {'columnName':'Codigo','width':'5','label':'Codigo'},
+					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
+                    {'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
                     {'columnName':'Porte','width':'5','label':'Porte'},
@@ -149,8 +213,9 @@ $(function(){
                 debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
+                    {'columnName':'Codigo','width':'5','label':'Codigo'},
 					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
 					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
@@ -178,9 +243,10 @@ $(function(){
                 debug:false,
                 colModel: [
                     {'columnName':'DataCadastra','width':'7','label':'Data'},
-                    {'columnName':'Produto','width':'15','label':'Nome'},
-                    {'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
-					{'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
+                    {'columnName':'Codigo','width':'5','label':'Codigo'},
+					{'columnName':'NomeCient','width':'15','label':'Nome Cient.'},
+					{'columnName':'Produto','width':'15','label':'Nome Popular'},
+                    {'columnName':'NFornecedor','width':'10','label':'Fornecedor'},
                     //{'columnName':'Poda','width':'10','label':'Poda'},
                     {'columnName':'Sigla','width':'5','label':'Un'},
                     {'columnName':'Porte','width':'5','label':'Porte'},
@@ -210,7 +276,8 @@ $(function(){
             debug:false,
             colModel: [
                 {'columnName':'DataCadastra','width':'15','label':'Data'},
-                {'columnName':'Modelo','width':'15','label':'Produto'},
+                {'columnName':'Codigo','width':'15','label':'Codigo'},
+				{'columnName':'Modelo','width':'15','label':'Produto'},
                 {'columnName':'Descricao','width':'15','label':'Revestimento'},
                 {'columnName':'Dimensoes','width':'15','label':'Dimensoes'},
                 {'columnName':'Valor','width':'10','label':'Valor'},
@@ -248,13 +315,64 @@ $(function(){
 
     $('#tabs li:eq(4)').click(function(){
 
-        $.post('action/orcamentos.php',{ 'do': 'totalizaCusto', 'CodOrcamento': <?=$_GET['id']?> },function(retorno){
-            $('#CustoMA').val(retorno);
+        $.post('action/orcamentos.php',{ 'do': 'totalizaCusto', 'CodOrcamento': <?=$_GET['id']?> },
+		function(retorno){
+            $('#CustoMA').val(retorno).priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.' });
+			
+			$.post('action/orcamentos.php',
+		{
+			'do': 'calculaCusto',
+			'CodOrcamento': <?php echo $id;?>,
+			'CustoMA': $('#CustoMA').val(),
+			'CustoMO': $('#CustoMO').val()
+		},
+		function(retorno){
+			$('#CustoGE').val(retorno).priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.' });;
+			
+			$.post('action/orcamentos.php',
+			{
+				'do': 'calculaPrecoMO',
+				'CodOrcamento': <?php echo $id;?>,
+				'CustoMO': $('#CustoMO').val(),
+				'LucroMO': $('#LucroMO').val()
+			},
+			function(retorno){
+				$('#PrecoMO').val(retorno).priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.' });;
+				//$('#CustoMO').val().ToFixed(2);
+				
+				$.post('action/orcamentos.php',
+				{ 
+					'do': 'totalizaPreco', 
+					'CodOrcamento': <?php echo $id;?>,
+					'LucroGE': $('#LucroGE').val()
+				},
+				function(retorno){
+					$('#PrecoMA').val(retorno).priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.' });;
+					
+					$.post('action/orcamentos.php',
+					{
+						'do': 'calculaPreco',
+						'CodOrcamento': <?php echo $id;?>,
+						'PrecoMA': $('#PrecoMA').val(),
+						'PrecoMO': $('#PrecoMO').val(),
+						'LucroMO': $('#LucroMO').val(),
+						'LucroGE': $('#LucroGE').val()
+					},
+					function(retorno){
+						$('#PrecoGE').val(retorno).priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '.' });;
+					});
+				});	
+			});
+		});
         });
-
-        $.post('action/orcamentos.php',{ 'do': 'totalizaPreco', 'CodOrcamento': <?=$_GET['id']?> },function(retorno){
+		
+		//$('#PrecoMA').val("calcular");
+		
+		/*
+        $.post('action/orcamentos.php',{ 'do': 'totalizaPreco', 'CodOrcamento': <?=$_GET['id']?>, 'LucroGE': $('#LucroGE').val() },function(retorno){
             $('#PrecoMA').val(retorno);
         });
+		*/
         //$('.moeda').priceFormat({ prefix: '', centsSeparator: ',', thousandsSeparator: '' });
     });
 
@@ -264,8 +382,6 @@ $(function(){
     //     });
     // });
     // 
-    
-    
 
 });
 </script>
@@ -277,10 +393,14 @@ $(function(){
                 <h4>
                     <span class="icon16 icomoon-icon-equalizer-2"></span>
                     <span>Adicionar Produtos</span>
+					<a href="action/orcamentos.php?do=copy&id=<?=$id?>" role="buttton" class="btn btn-info right" title="Duplicar orçamento"> <i class="icon-plus-sign"></i> Duplicar este orçamento</a>
+			<a href="#" role="buttton" class="btn btn-danger right" title="Atualizar orçamento" onclick="atualizaOrcamento(<?=$id?>);"> <i class="icon-refresh"></i> Atualizar todos os Preços</a>			
                 </h4>
+			
             </div>
+			
+			
             <div class="content">
-
                 <div class="form-row row-fluid">
                     <div class="span2">
                         <div class="row-fluid">
@@ -292,7 +412,7 @@ $(function(){
                     <div class="span2">
                         <div class="row-fluid">
                             <label class="form-label span4" for="cliente">Cliente:</label>
-                            <input class="span8" id="cliente" type="text" name="cliente" value="<?=$r['nomeCliente']?>" />
+                            <input class="span8" id="cliente" type="text" name="cliente" readonly value="<?=$r['nomeCliente']?>" />
                             <!-- <input id="id_cliente" type="hidden" name="id_cliente" value="<?=$_SESSION['orcamentos']['id_cliente']?>" /> -->
                         </div>
                     </div>
@@ -305,19 +425,19 @@ $(function(){
                     </div>
 
                     <div class="span2">
-                        <div class="row-fluid">
+                        <div class="row-fluid input-append">
                             <label class="form-label span8" for="LucroGE">Lucro:</label>
                             <input class="span4" id="LucroGE" type="text" name="LucroGE" value="<?=$r['LucroGE']?>" />
+							<span class="add-on">%</span>
                         </div>
                     </div>
-                    <div class="span3">
-                        <div class="row-fluid">
-                            <a href="action/orcamentos.php?do=copy&id=<?=$id?>" role="buttton" class="btn btn-info" title="Duplicar orçamento"> <i class="icon-plus-sign"></i> Duplicar</a>
-                            <a href="#" role="buttton" class="btn btn-info" title="Atualizar orçamento" onclick="atualizaOrcamento(<?=$id?>);"> <i class="icon-refresh"></i> Atualizar</a>
-                        </div>
-                    </div>
-                </div>
-
+					<div class="span2">
+					<div class="row-fluid">
+						<a href="#" role="buttton" class="btn btn-info" title="Salvar" onclick="editaOrcamento(<?=$id?>);"> <i class="icon-ok"></i> Salvar</a>
+					</div>
+					</div>
+				</div>
+				
                 <div class="form-row row-fluid">
                     <div class="span12">
                         <div class="page-header">
@@ -331,7 +451,6 @@ $(function(){
                                 <li class=""><a href="#vasos" data-toggle="tab">Vasos</a></li>
                                 <li class=""><a href="#totalizacoes" data-toggle="tab">Totalizações</a></li>
                             </ul>
-
                             <div class="tab-content">
                                 <?php include('orcamento-vegetais.php'); ?>
                                 <?php include('orcamento-forracoes.php'); ?>

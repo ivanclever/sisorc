@@ -2394,7 +2394,7 @@ h4 .icon span:hover {color: #3F3F3F;}
 /*Invoice page*/
 .invoice {position: relative;}
 	.invoice .content {padding-left:25px; padding-right: 25px;}
-	.invoice .invoice-info {float: left; margin-right: 10px;font-size: 12px; width: 150px; padding: 5px 0;}
+	.invoice .invoice-info {float: left; margin-left: 30px; margin-right: 10px;font-size: 12px; width: 400px; padding: 5px 0;}
 	.invoice .invoice-info .number {float: left;}
 	.invoice .invoice-info .data {float: left;}
 	.invoice .print {float: right; margin-right: 25px; margin-top: 5px;}

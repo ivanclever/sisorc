@@ -18,7 +18,9 @@ switch ($do) {
 					(CodCategoriaProduto, Codigo, NomePopular, NomeCientifico, Ambiente, Observacoes, status)
 				VALUES
 					('$categoria', '$codigo', '$nome_popular', '$nome', '$ambiente', '$observacoes', '$status')")) {
+				$_SESSION['produtos'] = "";
 				Info('Produto cadastrado com sucesso');
+				
 				Go('../?s=produtos');
 			} else Erro("Erro durante cadastro, tente novamente");
 		}

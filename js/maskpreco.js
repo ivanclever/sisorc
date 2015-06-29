@@ -17,9 +17,9 @@
 	$.fn.priceFormat = function(options) {
 
 		var defaults = {
-			prefix: 'US$ ',
-			centsSeparator: '.', 
-			thousandsSeparator: ',',
+			prefix: '',
+			centsSeparator: ',', 
+			thousandsSeparator: '.',
 			limit: false,
 			centsLimit: 2
 		};

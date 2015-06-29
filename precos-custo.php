@@ -49,7 +49,7 @@ if($preco != '') {
 
 	$rs_fornecedores = mysql_query("SELECT * FROM fornecedores ORDER BY Nome DESC");
 
-$rs_produtos = mysql_query("SELECT NomePopular FROM produtos WHERE CodProduto = '$id'");
+$rs_produtos = mysql_query("SELECT NomePopular,NomeCientifico FROM produtos WHERE CodProduto = '$id'");
 	$r_produto = mysql_fetch_assoc($rs_produtos);
 ?>
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -183,8 +183,9 @@ $(function(){
             <?php showErros(); ?>
             <div class="title">
                 <h4>
-                    <span class="left">Preços de Custo - Produto: <strong style="text-transform: uppercase;"><?=$r_produto['NomePopular']?></strong></span>
+                    <span class="left">Preços de Custo - Produto: <strong style="text-transform: uppercase;"><?=$r_produto['NomeCientifico']?> - <?=$r_produto['NomePopular']?></strong></span>
                     <a class="btn blue right" href="?s=precos-custo-inativos&id=<?=$id?>" title="Inativos" style="margin:0 5px 5px 0;"> Visualizar Inativos</a>
+					<a class="btn warning right" href="?s=produtos-edit&id=<?=$id?>" title="Observações" style="margin:0 5px 5px 0;"> Ver Observações</a>
                 </h4>
                 <div style="clear:both"></div>
             </div>
@@ -309,12 +310,13 @@ $(function(){
                     <div class="form-actions">
                        <button type="submit" class="btn btn-info">Adicionar Preço de custo</button>
                        <button type="button" class="btn" onclick="location.href='?s=produtos'">Cancelar</button>
+					   
                     </div>
 				</div>
            </form>
             
             <br />
-        
+			
             <br /> 
 
             <div class="content noPad" style="border-top:1px solid #C4C4C4; overflow-x:auto !important;">
@@ -328,11 +330,11 @@ $(function(){
                             <th>Poda</th>
                             <th>Cor</th>
                             <th>Un.</th>
-                            <th>Porte</th>
+                            <th>Porte(cm)</th>
                             <th>Diam. Copa</th>
                             <th>Diam. Tronco</th>
                             <th>Alt. Tronco</th>
-                            <th>Unid. Caixa</th>
+                            <th>Un. p/caixa</th>
                             <th>Data</th>
                             <th>Valor</th>
 							<th>Ações</th>
@@ -377,7 +379,7 @@ $(function(){
                             <td width="50"><input type="text" class="moeda" name="valor" id="valor_<?=$r_preco_current['CodPreco']?>" value="<?=sprintf('%0.2f', $r_preco_current['Valor']);?>" style="width:50px;" /></td>
 							<td align="center">
                                 <a href="javascript:;" role="buttton" CodFornecedor="<?=$r_preco_current['CodFornecedor']?>" id="<?=$r_preco_current['CodPreco']?>"  title="Salvar produto" class="btn btn-success editPreco"> <i class="icon-ok"></i> </a>
-                                <a href="action/precos.php?do=copy&id=<?=$r_preco_current['CodPreco']?>" role="buttton" class="btn btn-success" title="Duplicar produto"> <i class="icon-plus-sign"></i> </a>
+                                <a href="action/precos.php?do=copy&id=<?=$r_preco_current['CodPreco']?>" role="buttton" class="btn btn-success" title="Duplicar produto" onclick="return confirm('Deseja realmente duplicar preço?');"> <i class="icon-plus-sign"></i> </a>
 								
 								<!-- <a href="javascript:;" role="buttton" id="<?=$r_preco_current['CodPreco']?>" class="btn btn-danger excluiProduto"> <i class="icon-trash"></i> </a>-->
 								
@@ -400,11 +402,11 @@ $(function(){
                             <th>Poda</th>
                             <th>Cor</th>
                             <th>Un.</th>
-                            <th>Porte</th>
+                            <th>Porte(cm)</th>
                             <th>Diam. Copa</th>
                             <th>Diam. Tronco</th>
                             <th>Alt. Tronco</th>
-                            <th>Unidades</th>
+                            <th>Un. p/caixa</th>
                             <th>Data</th>
 							<th>Valor</th>
                             <th>Ações</th>
@@ -419,7 +421,7 @@ $(function(){
                         <form id="preco_<?=$r['CodPreco']?>">
                             <tr class="odd gradeX" id="trprod_<?=$r['CodPreco']?>">
                                 <td width="100">
-                                    <?=$r['nomeFornecedor']?>
+                                    <a target="_blank" href="?s=fornecedores-edit&id=<?=$r['CodFornecedor']?>"><?=$r['nomeFornecedor']?></a>
                                 </td>
                                 <td width="50">
                                     
@@ -442,7 +444,7 @@ $(function(){
 								<td width="50"><div style="display:none"><?=$r['Valor']?></div><input type="text" class="moeda" name="valor" id="valor_<?=$r['CodPreco']?>" value="<?=sprintf('%0.2f', $r['Valor'])?>" style="width:50px;" /></td>
                                 <td align="center">
                                     <a href="javascript:;" role="buttton" CodFornecedor="<?=$r['CodFornecedor']?>" id="<?=$r['CodPreco']?>"  title="Salvar produto" class="btn btn-success editPrecoValor"> <i class="icon-ok"></i> </a>
-                                    <a href="action/precos.php?do=copy&id=<?=$r['CodPreco']?>" role="buttton" class="btn btn-success" title="Duplicar produto"> <i class="icon-plus-sign"></i> </a>
+                                    <a href="action/precos.php?do=copy&id=<?=$r['CodPreco']?>" role="buttton" class="btn btn-success" title="Duplicar produto"  onclick="return confirm('Deseja realmente duplicar preço?');"> <i class="icon-plus-sign"></i> </a>
 									
 									<a href="javascript:;" role="buttton" id="<?=$r['CodPreco']?>" class="btn btn-danger excluiProduto"  title="Desativar produto"> <i class="icon-trash"></i> </a>
                                     <!-- <a href="action/precos.php?do=exclui&id=<?=$r['CodProduto']?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i></a> -->

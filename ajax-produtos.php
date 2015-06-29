@@ -62,7 +62,7 @@ if($total_pages!=0)
     //     GROUP BY precos.CodPreco
     //     ORDER BY $sidx $sord LIMIT $start , $limit";
 
-    $SQL = "SELECT precos.*, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*, p.NomePopular,p.Codigo, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
             FROM precos
             LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
             LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -75,7 +75,7 @@ if($total_pages!=0)
             ORDER BY $sidx $sord LIMIT $start , $limit";
 else
 
-    $SQL = "SELECT precos.*, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*,p.Codigo, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
         FROM precos
         LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
         LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -107,6 +107,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
 
     $response->rows[$i]['DataCadastra']         = $row['dataCad'];
     $response->rows[$i]['CodPreco']             = $row['CodPreco'];
+	$response->rows[$i]['Codigo']            	= $row['Codigo'];
     $response->rows[$i]['CodProduto']           = $row['CodProduto'];
     $response->rows[$i]['Produto']              = $row['NomePopular'];
 	$response->rows[$i]['NomeCient']             = $row['NomeCientifico'];

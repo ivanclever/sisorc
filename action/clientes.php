@@ -15,7 +15,7 @@ switch ($do) {
 		$cnpj = soNum($cnpj);
 
 		if($tipo == '0') {
-			ValidaCPF($cpf,'Campo CPF inválido');
+			//validaCPF($cpf,'Campo CPF inválido');
 			$documento = $cpf;
 		} else {
 			ValidaCNPJ($cnpj);

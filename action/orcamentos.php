@@ -48,7 +48,7 @@ switch ($do) {
 
 	#VEGETAIS
 	case 'CadProdutoVegetais':
-		ValidaVazio($id_produto_vegetais,'Campo Produto Obrigatório');
+		//ValidaVazio($id_produto_vegetais,'Campo Produto Obrigatório');
 		ValidaVazio($quantidade,'Campo Quantidade Obrigatório');
 		//echo $quantidade; die();
 		$quantidade = str_replace(",", ".", $quantidade); 
@@ -97,6 +97,43 @@ switch ($do) {
 			}
 		}
 		//Go();
+	break;
+	
+	case 'AlteraItemOrcamento':
+		//ValidaVazio($quantidade,'Campo Quantidade Obrigatório');
+		$quantidade = str_replace(",", ".", $quantidade); 
+		$novovalortotal = $novovalor*$quantidade;
+		if (semErros()) {
+			if($tipo=="vegetais"){
+			$query = "UPDATE orcespeciesvegetais 
+					SET 	Valor='$novovalor', ValorTotal='$novovalortotal', CodPreco='$novocodpreco'  
+					WHERE 	CodOrcEspecieVegetal = '$id'";
+			}elseif($tipo=="forracoes"){
+				$query = "UPDATE orcforracoes   
+					SET 	Valor='$novovalor', ValorTotal='$novovalortotal', CodPreco='$novocodpreco' 
+					WHERE 	CodOrcForracao = '$id'";
+			}
+			elseif($tipo=="diversos"){
+				$query = "UPDATE orcdiversos   
+					SET 	Valor='$novovalor', ValorTotal='$novovalortotal', CodPreco='$novocodpreco' 
+					WHERE 	CodOrcDiverso = '$id'";
+			}elseif($tipo=="vasos"){
+				$query = "UPDATE orcvasos   
+					SET 	Valor='$novovalor', ValorTotal='$novovalortotal', CodPreco='$novocodpreco' 
+					WHERE 	CodOrcVaso = '$id'";
+			}
+			
+			//cadastra produto
+			if (mysql_query($query)) {
+
+				//Info('Produto alterado com sucesso');
+				echo sprintf('%0.2f', $valorTotal);
+				
+			} else {
+				Erro('Erro durante a alteração, tente novamente');
+			}
+		}
+		//Go('../?s=orcamentos-produtos&id='.$CodOrcamento.'#'.$tipo);
 	break;
 
 	case 'excluiVegetais':
@@ -519,8 +556,12 @@ switch ($do) {
 		Go();
 	break;
 	case 'calculaCusto':
+		$CustoMA = LimpaPontoRetornaFloat($CustoMA);
+		$CustoMO = LimpaPontoRetornaFloat($CustoMO);
+		
 		$somaCusto 		= $CustoMA+$CustoMO;
-
+		$somaCusto		= sprintf('%0.2f', $somaCusto);
+		
  		mysql_query("UPDATE orcamentos SET CustoMA='$CustoMA', CustoMO='$CustoMO', CustoGE='$somaCusto' WHERE CodOrcamento = '$CodOrcamento'");
 
  		echo $somaCusto;
@@ -528,6 +569,8 @@ switch ($do) {
 
 	
 	case 'calculaPrecoMO':
+		
+		$CustoMO = LimpaPontoRetornaFloat($CustoMO);
 		
  		if($LucroMO != '' || $LucroMO != 0){
 			$perc 			= $LucroMO / 100.0;
@@ -537,24 +580,28 @@ switch ($do) {
 			$PrecoMO = $CustoMO;
 		}
 		$PrecoMO = sprintf('%0.2f', $PrecoMO);
+		$CustoMO = sprintf('%0.2f', $CustoMO);
 		
 		mysql_query("UPDATE orcamentos SET CustoMO= '$CustoMO', PrecoMO='$PrecoMO', LucroMO='$LucroMO' WHERE CodOrcamento = '$CodOrcamento'");
-
+		
  		echo $PrecoMO;
 	break;
 	
 	case 'calculaPreco':
-	
+		$PrecoMA = LimpaPontoRetornaFloat($PrecoMA);
+		$PrecoMO = LimpaPontoRetornaFloat($PrecoMO);
+		
 		$somaPreco = $PrecoMA+$PrecoMO;
 		
+		/* 
  		if($LucroGE != '' || $LucroGE != 0) {
  			$percGE 	= $LucroGE / 100.0;
  			$PrecoGE 	= $somaPreco + ($percGE * $somaPreco);
  		} else {
  			$PrecoGE = $somaPreco;
  		}
-		
-		$PrecoGE = sprintf('%0.2f', $PrecoGE);
+		*/
+		$PrecoGE = sprintf('%0.2f', $somaPreco);
  		
 		mysql_query("UPDATE orcamentos SET PrecoMA='$PrecoMA', PrecoMO='$PrecoMO', LucroMO='$LucroMO', LucroGE='$LucroGE', PrecoGE='$PrecoGE' WHERE CodOrcamento = '$CodOrcamento'");
 
@@ -592,22 +639,36 @@ switch ($do) {
 
 		//ESPECIES VEGETAIS
 			$rs_vegetais 		= mysql_query("SELECT * FROM orcespeciesvegetais WHERE CodOrcamento = '$CodOrcamento'");
-						
+			
+			
+			
 			while ($rv = mysql_fetch_assoc($rs_vegetais)){
 				
 				//print_r($rv);
 				//soma dos custos
-				$valorVegetais += $rv[ValorTotal];
+				//$valorVegetais += $rv[ValorTotal];
 				
 				//soma dos preços
-				if($rv[Lucro] != '' || $rv[Lucro] != NULL || $rv[Lucro] != 0) {
-					$perlucro = $rv[Lucro]/100.0;
-					$espveg_preço = $rv[ValorTotal] + ($perlucro * $rv[ValorTotal]);
-					$totalVegetais += $espveg_preço;
+				if($rv['Lucro']>0) {
+					$perlucro = $rv['Lucro']/100.0;
+					$espveg_preco = $rv['ValorTotal'] + ($perlucro * $rv['ValorTotal']);
+					$totalVegetais += $espveg_preco;
 					//echo "passou".$espveg_preço;
+					continue;
 					
+				}elseif($r['LucroEspeciesVegetais']>0) {
+					$perlucro = $r['LucroEspeciesVegetais']/100.0;
+					$espveg_preco = $rv['ValorTotal'] + ($perlucro * $rv['ValorTotal']);
+					$totalVegetais += $espveg_preco;
+					continue;
+				}elseif($LucroGE>0) {
+					$perlucro = $LucroGE/100.0;
+					$espveg_preco = $rv['ValorTotal'] + ($perlucro * $rv['ValorTotal']);
+					$totalVegetais += $espveg_preco;
+					continue;
 				}else{
-					$totalVegetais += $rv[ValorTotal];
+					$totalVegetais += $rv['ValorTotal'];
+					continue;
 				}
 			}
 			
@@ -616,12 +677,14 @@ switch ($do) {
 			//$valorVegetais 		= $r_vegetais['ValorTotal'] + ($percVegetais * $r_vegetais['ValorTotal']);
 
 			//se o campo Lucro Especies vegetais não está vazio soma
+			/*
 			if($r['LucroEspeciesVegetais'] != '' || $r['LucroEspeciesVegetais'] != NULL || $r['LucroEspeciesVegetais'] != 0) {
 				$percLucroVegetais 	= $r['LucroEspeciesVegetais'] / 100.0;
 				$totalVegetais 	= $totalVegetais + ($percLucroVegetais * $totalVegetais);
-			} 
+			}
+			*/			
 		
-		$totalVegetais = sprintf('%0.2f', $totalVegetais);
+			$totalVegetais = sprintf('%0.2f', $totalVegetais);
 		
 		//FORRACOES
 			$rs_forracoes 		= mysql_query("SELECT * FROM orcforracoes WHERE CodOrcamento = '$CodOrcamento'");
@@ -630,15 +693,27 @@ switch ($do) {
 				
 				//print_r($rf);
 				//soma dos custos
-				$valorForracoes += $rf[ValorTotal];
+				//$valorForracoes += $rf[ValorTotal];
 				
 				//soma dos preços
-				if($rf[Lucro] != '' || $rf[Lucro] != NULL || $rf[Lucro] != 0) {
-					$perlucro = $rf[Lucro]/100.0;
-					$forr_preco = $rf[ValorTotal] + ($perlucro * $rf[ValorTotal]);
+				if($rf['Lucro']>0) {
+					$perlucro = $rf['Lucro']/100.0;
+					$forr_preco = $rf['ValorTotal'] + ($perlucro * $rf['ValorTotal']);
 					$totalForracoes += $forr_preco;
+					continue;
+				}elseif($r['LucroForracoes']>0) {
+					$perlucro = $r['LucroForracoes']/100.0;
+					$forr_preco = $rf['ValorTotal'] + ($perlucro * $rf['ValorTotal']);
+					$totalForracoes += $forr_preco;
+					continue;
+				}elseif($LucroGE>0) {
+					$perlucro = $LucroGE/100.0;
+					$forr_preco = $rf['ValorTotal'] + ($perlucro * $rf['ValorTotal']);
+					$totalForracoes += $forr_preco;
+					continue;
 				}else{
-					$totalForracoes += $rf[ValorTotal];
+					$totalForracoes += $rf['ValorTotal'];
+					continue;
 				}
 			}
 			
@@ -646,10 +721,12 @@ switch ($do) {
 			//$valorVegetais 		= $r_vegetais['ValorTotal'] + ($percVegetais * $r_vegetais['ValorTotal']);
 
 			//se o campo Lucro Especies vegetais não está vazio soma
+			/*
 			if($r['LucroForracoes'] != '' || $r['LucroForracoes'] != NULL || $r['LucroForracoes'] != 0) {
 				$percLucroForr 	= $r['LucroForracoes']/100.0;
 				$totalForracoes 	= $totalForracoes + ($percLucroForr * $totalForracoes);
 			} 
+			*/
 		
 		$totalForracoes = sprintf('%0.2f', $totalForracoes);
 		
@@ -660,15 +737,27 @@ switch ($do) {
 				
 				//print_r($rv);
 				//soma dos custos
-				$valorDiversos += $rd[ValorTotal];
+				//$valorDiversos += $rd[ValorTotal];
 				
 				//soma dos preços
-				if($rd[Lucro] != '' || $rd[Lucro] != NULL || $rd[Lucro] != 0) {
-					$perlucro = $rd[Lucro]/100.0;
-					$div_preço = $rd[ValorTotal] + ($perlucro * $rd[ValorTotal]);
-					$totalDiversos += $div_preço;
+				if($rd['Lucro']>0) {
+					$perlucro = $rd['Lucro']/100.0;
+					$div_preco = $rd['ValorTotal'] + ($perlucro * $rd['ValorTotal']);
+					$totalDiversos += $div_preco;
+					continue;
+				}elseif($r['LucroDiversos']>0) {
+					$perlucro = $r['LucroDiversos']/100.0;
+					$div_preco = $rd['ValorTotal'] + ($perlucro * $rd['ValorTotal']);
+					$totalDiversos += $div_preco;
+					continue;
+				}elseif($LucroGE>0) {
+					$perlucro = $LucroGE/100.0;
+					$div_preco = $rd['ValorTotal'] + ($perlucro * $rd['ValorTotal']);
+					$totalDiversos += $div_preco;
+					continue;
 				}else{
-					$totalDiversos += $rd[ValorTotal];
+					$totalDiversos += $rd['ValorTotal'];
+					continue;
 				}
 			}
 			
@@ -677,29 +766,43 @@ switch ($do) {
 			//$valorVegetais 		= $r_vegetais['ValorTotal'] + ($percVegetais * $r_vegetais['ValorTotal']);
 
 			//se o campo Lucro Especies vegetais não está vazio soma
+			/*
 			if($r['LucroDiversos'] != '' || $r['LucroDiversos'] != NULL || $r['LucroDiversos'] != 0) {
 				$percLucroDiv 	= $r['LucroDiversos'] / 100.0;
 				$totalDiversos 	= $totalDiversos + ($percLucroDiv * $totalDiversos);
 			} 
+			*/
 		
 		$totalDiversos = sprintf('%0.2f', $totalDiversos);
 		
 		//VASOS
 			$rs_vasos 		= mysql_query("SELECT * FROM orcvasos WHERE CodOrcamento = '$CodOrcamento'");
 						
-			while ($rv = mysql_fetch_assoc($rs_vasos)){
+			while ($rvs = mysql_fetch_assoc($rs_vasos)){
 				
 				//print_r($rv);
 				//soma dos custos
-				$valorVasos += $rv[ValorTotal];
+				//$valorVasos += $rv[ValorTotal];
 				
 				//soma dos preços
-				if($rv[Lucro] != '' || $rv[Lucro] != NULL || $rv[Lucro] != 0) {
-					$perlucro = $rv[Lucro]/100.0;
-					$vasos_preço = $rv[ValorTotal] + ($perlucro * $rv[ValorTotal]);
-					$totalVasos += $vasos_preço;
+				if($rvs['Lucro']>0) {
+					$perlucro = $rvs['Lucro']/100.0;
+					$vasos_preco = $rvs['ValorTotal'] + ($perlucro * $rv['ValorTotal']);
+					$totalVasos += $vasos_preco;
+					continue;
+				}elseif($r['LucroVasos']>0) {
+					$perlucro = $r['LucroVasos']/100.0;
+					$vasos_preco = $rvs[ValorTotal] + ($perlucro * $rvs[ValorTotal]);
+					$totalVasos += $vasos_preco;
+					continue;
+				}elseif($LucroGE>0) {
+					$perlucro = $LucroGE/100.0;
+					$vasos_preco = $rvs[ValorTotal] + ($perlucro * $rvs['ValorTotal']);
+					$totalVasos += $vasos_preco;
+					continue;
 				}else{
-					$totalVasos += $rv[ValorTotal];
+					$totalVasos += $rvs['ValorTotal'];
+					continue;
 				}
 			}
 			
@@ -708,10 +811,12 @@ switch ($do) {
 			//$valorVegetais 		= $r_vegetais['ValorTotal'] + ($percVegetais * $r_vegetais['ValorTotal']);
 
 			//se o campo Lucro Especies vegetais não está vazio soma
+			/*
 			if($r['LucroVasos'] != '' || $r['LucroVasos'] != NULL || $r['LucroVasos'] != 0) {
 				$percLucrovasos 	= $r['LucroVasos'] / 100.0;
 				$totalVasos 	= $totalVasos + ($percLucrovasos * $totalVasos);
 			} 
+			*/
 
 		$totalVasos = sprintf('%0.2f', $totalVasos);
 		
@@ -719,7 +824,7 @@ switch ($do) {
 		
 		$PrecoMA = sprintf('%0.2f', $PrecoMA);
 		
-		mysql_query("UPDATE orcamentos SET PrecoMA='$PrecoMA' WHERE CodOrcamento = '$CodOrcamento'");
+		mysql_query("UPDATE orcamentos SET PrecoMA='$PrecoMA', LucroGE='$LucroGE' WHERE CodOrcamento = '$CodOrcamento'");
 
 		echo $PrecoMA;
 
@@ -734,7 +839,7 @@ switch ($do) {
 		$CodCliente 				= $r['CodCliente'];
 		$JOB						= '(CÓPIA) '.$r['JOB'];
 		$Obra 						= $r['Obra'];
-		$Lucro						= $r['Lucro'];
+		$LucroGE					= $r['LucroGE'];
 		$TituloEspeciesVegetais		= $r['TituloEspeciesVegetais'];
 		$LucroEspeciesVegetais		= $r['LucroEspeciesVegetais'];
 
@@ -764,7 +869,7 @@ switch ($do) {
 					JOB,
 					Obra,
 					DataCadastra,
-					Lucro,
+					LucroGE,
 					TituloEspeciesVegetais,
 					LucroEspeciesVegetais,
 					TituloForracoes,
@@ -786,7 +891,7 @@ switch ($do) {
 					'$JOB',
 					'$Obra',
 					NOW(),
-					'$Lucro',
+					'$LucroGE',
 					'$TituloEspeciesVegetais',
 					'$LucroEspeciesVegetais',
 					'$TituloForracoes',
@@ -849,5 +954,20 @@ switch ($do) {
 		Go('../?s=orcamentos-produtos&id='.$id.'');
 	
 	break;
+	
+	case 'edita_infos':
+	
+		$id = (int)$_GET['id'];
+		$job = $_GET['job'];
+		$obra = $_GET['obra'];
+		$lucro = $_GET['lucro'];
+		
+		//atualiza dados do orçamento
+		mysql_query("UPDATE orcamentos set JOB='$job', Obra='$obra', LucroGE='$lucro', DataCadastra=NOW() WHERE CodOrcamento = '$id'"); 				
+		
+		Info('Orçamento atualizado com sucesso.');
+		Go('../?s=orcamentos-produtos&id='.$id.'');
+		
+		break;
 }
 ?>

@@ -27,7 +27,7 @@ $(function(){
             'UnidadesPorCaixa': unidadesPorCaixa
         },
         function(retorno){
-			$('td#valor_'+id).html("R$ " + retorno);
+			$('td#valortotal_'+id).html("R$ " + retorno);
 			alert("Produto alterado com sucesso");
         });
     });
@@ -43,7 +43,7 @@ $(function(){
             <div class="span4" style="margin-left:40px;">
                 <div class="row-fluid">
                     <label class="form-label span4" for="titulo">Título</label>
-                    <input class="span8" id="titulo" type="text" name="titulo" value="<?=$r['TituloForracoes']?>" />
+                    <input class="span8" id="titulo" type="text" name="titulo" value="<?php if (!isset($r['TituloForracoes']) || $r['TituloForracoes']==""){echo "Forrações";}else{echo $r['TituloForracoes'];} ?>" />
                 </div>
             </div>
             <div class="span3">
@@ -68,8 +68,10 @@ $(function(){
                 <h3 style="margin-left:50px;">Produtos:</h3>
                 <div class="row-fluid">
                     <label class="form-label span2" for="busca_vegetais">Buscar por:</label>
-                    <label style="float:left;"><input type="radio" name="buca_forracoes" checked id="produto_busca" /> Produto/Código</label>
-                    <label style="float:left; margin-left:10px;"><input type="radio" name="buca_forracoes" id='fornecedor_busca' /> Fornecedor</label>
+                    <label style="float:left;">
+					<input type="radio" name="buca_forracoes" checked id="produto_busca" /> Produto/Código</label>
+                    <label style="float:left; margin-left:10px;">
+					<input type="radio" name="buca_forracoes" id='fornecedor_busca' /> Fornecedor</label>
                 </div>
             </div>
             <div class="span3">
@@ -145,7 +147,7 @@ $(function(){
     <br />
     <strong>Produtos:</strong>
     <?php
-    $rs_forracoes = mysql_query("SELECT produtos.CodProduto, produtos.NomePopular,produtos.NomeCientifico, orcforracoes.CodOrcForracao, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.quantidade_mudas_m2,
+    $rs_forracoes = mysql_query("SELECT produtos.CodProduto,produtos.Codigo, produtos.NomePopular,produtos.NomeCientifico, orcforracoes.CodOrcForracao, orcforracoes.QtdeM2, orcforracoes.QtdeCaixasMudas,orcforracoes.DistanciaPlantio, orcforracoes.quantidade_mudas_m2,
         orcforracoes.Valor,orcforracoes.ValorTotal, orcforracoes.Lucro, orcforracoes.Observacoes, orcforracoes.CodOrcForracao, precos.Porte, precos.DataCadastra,
         DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, fornecedores.Nome nomeFornecedor, fornecedores.CodFornecedor, unidadesmedida.Sigla, precos.UnidadesPorCaixa, precos.CodPreco
         FROM orcamentos, orcforracoes, precos, unidadesmedida, produtos, fornecedores
@@ -160,14 +162,15 @@ $(function(){
         <thead>
             <tr>
                 <th>Nº</th>
-				<th>Nome</th>
+				<th>Codigo</th>
 				<th>Nome Cient.</th>
+				<th>Nome Pop.</th>
                 <th>Fornecedor</th>
                 <th>QTDE M²</th>
                 <th>Dist.</th>
                 <th>Qtde cx/md</th>
 				<th>Unid.</th>
-                <th>Porte</th>
+                <th>Porte(cm)</th>
                 <th>Valor</th>
                 <th>Mudas/m2</th>
 				<th>Data</th>
@@ -184,9 +187,10 @@ $(function(){
             <form id="forracoes_<?=$r_forracoes['CodOrcForracao']?>">
                 <tr class="odd gradeX">
                     <td width="20"><?=$r_forracoes['CodOrcForracao']?></td>
-					<td width="100"><a target="_blank" href="?s=precos-custo&id=<?=$r_forracoes['CodProduto']?>&preco=<?=$r_forracoes['CodPreco']?>"><?=$r_forracoes['NomePopular']?></a></td>
-					<td width="100"><?=$r_forracoes['NomeCientifico']?></td>
-                    <td width="100"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_forracoes['CodFornecedor']?>"><strong><?=$r_forracoes['nomeFornecedor']?></strong></a></td>
+					<td width="20"><?=$r_forracoes['Codigo']?></td>
+					<td width="100"><input type="text" name="forrnomecient" class="itemorcbusca"  id="itemorcbusca_<?=$r_forracoes['CodOrcForracao'].'_forracoes'?>" value="<?=$r_forracoes['NomeCientifico']?>"></td>
+					<td width="100"><a href="?s=precos-custo&id=<?=$r_forracoes['CodProduto']?>&preco=<?=$r_forracoes['CodPreco']?>"><?=$r_forracoes['NomePopular']?></a></td>
+					<td width="100"><a href="?s=fornecedores-edit&id=<?=$r_forracoes['CodFornecedor']?>"><strong><?=$r_forracoes['nomeFornecedor']?></strong></a></td>
                     <td width="30"><input type="text" name="quantidade" id="quantidade_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['QtdeM2']?>" /></td>
                     <td width="30"><input type="text" name="distancia" id="distancia_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['DistanciaPlantio']?>" /></td>
                     <td width="30"><?=$r_forracoes['QtdeCaixasMudas']?></td>
@@ -196,7 +200,7 @@ $(function(){
 					<td width="30"><input type="text" name="qm2" id="qm2_<?=$r_forracoes['CodOrcForracao']?>" required value="<?=$r_forracoes['quantidade_mudas_m2']?>" /></td>
                     <td width="70"><?=$r_forracoes['dataCad']?></td>
                     <td width="80"><input type="text" name="obs" id="obs_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Observacoes']?>" /></td>
-                    <td width="70" id="valor_<?=$r_forracoes['CodOrcForracao']?>"><strong>R$ <?=sprintf('%0.2f', $r_forracoes['ValorTotal']);?></strong></td>
+                    <td width="70" id="valortotal_<?=$r_forracoes['CodOrcForracao']?>"><strong>R$ <?=sprintf('%0.2f', $r_forracoes['ValorTotal']);?></strong></td>
                     <td width="30"><input type="text" name="lucro" id="lucro_<?=$r_forracoes['CodOrcForracao']?>" value="<?=$r_forracoes['Lucro']?>" /></td>
                     <td align="center">
                         <a href="javascript:;" role="buttton" id="<?=$r_forracoes['CodOrcForracao']?>" CodOrcamento="<?=$id?>" class="btn btn-success editFor"> <i class="icon-ok"></i> </a>

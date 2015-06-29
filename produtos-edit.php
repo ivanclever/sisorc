@@ -67,7 +67,7 @@ $categorias = mysql_query("SELECT * FROM categoriasprodutos");
                         <div class="span12">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="nome">Nome Cientifico</label>
-                                <input class="span8" id="nome" type="text" name="nome" value="<?=$r['NomePopular']?>" />
+                                <input class="span8" id="nome" type="text" name="nome" value="<?=$r['NomeCientifico']?>" />
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@ $categorias = mysql_query("SELECT * FROM categoriasprodutos");
                         <div class="span12">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="nome_popular">Nome Popular:</label>
-                                <input class="span8" type="text" id="nome_popular" name="nome_popular" value="<?=$r['NomeCientifico']?>" />
+                                <input class="span8" type="text" id="nome_popular" name="nome_popular" value="<?=$r['NomePopular']?>" />
                             </div>
                         </div>
                     </div>

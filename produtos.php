@@ -44,7 +44,7 @@ $rs = mysql_query("SELECT produtos.*, categoriasprodutos.Nome nomeCategoria FROM
                             <td width="200"><?=$r['NomePopular']?></td>
                             <td width="200"><?=$r['nomeCategoria']?></td>
                             <td align="center">
-                                <a class="btn mini blue" href="?s=precos-custo&id=<?=$r['CodProduto']?>" target="_blank"><i class="icomoon-icon-coins "></i> Preços de custo</a>
+                                <a class="btn mini blue" href="?s=precos-custo&id=<?=$r['CodProduto']?>"><i class="icomoon-icon-coins "></i> Preços de custo</a>
                                 <a class="btn mini blue" href="?s=produtos-edit&id=<?=$r['CodProduto']?>"><i class="icon-pencil"></i> Editar</a>
                                 <a href="action/produtos.php?do=exclui&id=<?=$r['CodProduto']?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i> Desativar</a>
                             </td>

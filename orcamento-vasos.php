@@ -21,7 +21,7 @@ $(function(){
             'obs': obs
         },
         function(retorno){
-            $('td#valor_'+id).html("R$ " + retorno);
+            $('td#valortotal_'+id).html("R$ " + retorno);
 			alert("Produto alterado com sucesso");
         });
     });
@@ -36,7 +36,7 @@ $(function(){
             <div class="span4" style="margin-left:40px;">
                 <div class="row-fluid">
                     <label class="form-label span4" for="titulo">Título</label>
-                    <input class="span8" id="titulo" type="text" name="titulo" value="<?=$r['TituloVasos']?>" />
+                    <input class="span8" id="titulo" type="text" name="titulo" value="<?php if (!isset($r['TituloVasos']) || $r['TituloVasos']==""){echo "Vasos";}else{echo $r['TituloVasos'];}?>" />
                 </div>
             </div>
             <div class="span3">
@@ -153,7 +153,7 @@ $(function(){
                     <th>Modelo</th>
                     <th>QTDE</th>
                     <th>Cor</th>
-                    <th>Esp./Forração</th>
+                    <th>Obs.</th>
                     <th>Valor</th>
                     <th>Total</th>
                     <th>Lucro</th>
@@ -165,14 +165,14 @@ $(function(){
                 <form id="vasos_<?=$r_vasos['CodOrcVaso']?>">
                     <tr class="odd gradeX">
 						<td width="20"><?=$r_vasos['CodOrcVaso']?></td>
-                        <td width="50"><?=$r_vasos['Codigo']?></td>
-                        <td width="150"><a target="_blank" href="?s=fornecedores-edit&id=<?=$r_vasos['CodFornecedor']?>"><?=$r_vasos['nomeFornecedor']?></a></td>
-                        <td width="150"><a target="_blank" href="?s=vasos&id=<?=$r_vasos['CodVaso']?>"><?=$r_vasos['Modelo']?></a></td>
+                        <td width="50"><input type="text" name="vasonomecient" class="itemorcbusca"  id="itemorcbusca_<?=$r_vasos['CodOrcVaso'].'_vasos'?>" value="<?=$r_vasos['Codigo']?>"></td>
+                        <td width="150"><a href="?s=fornecedores-edit&id=<?=$r_vasos['CodFornecedor']?>"><?=$r_vasos['nomeFornecedor']?></a></td>
+                        <td width="150"><a href="?s=vasos&id=<?=$r_vasos['CodVaso']?>"><?=$r_vasos['Modelo']?></a></td>
                         <td width="50"><input type="text" name="quantidade" id="quantidade_<?=$r_vasos['CodOrcVaso']?>" value="<?=$r_vasos['Quantidade']?>" /></td>
                         <td width="100"><?=$r_vasos['nomeCor']?></td>
                         <td width="100"><?=$r_vasos['Conteudo']?></td>
                         <td width="50"><input type="text" name="valor" id="valor_<?=$r_vasos['CodOrcVaso']?>" value="<?=sprintf('%0.2f',$r_vasos['Valor']);?>" /></td>
-                        <td width="100" id="valor_<?=$r_vasos['CodOrcVaso']?>">R$ <?=sprintf('%0.2f',$r_vasos['ValorTotal']);?></td>
+                        <td width="100" id="valortotal_<?=$r_vasos['CodOrcVaso']?>">R$ <?=sprintf('%0.2f',$r_vasos['ValorTotal']);?></td>
                         <td width="50"><input type="text" name="lucro" id="lucro_<?=$r_vasos['CodOrcVaso']?>" value="<?=$r_vasos['Lucro']?>" /></td>
                         <td align="center">
                             <a href="javascript:;" role="buttton" id="<?=$r_vasos['CodOrcVaso']?>" CodOrcamento="<?=$id?>" class="btn btn-success editVas"> <i class="icon-ok"></i></a>

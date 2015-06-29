@@ -2,11 +2,11 @@
 $rs_forracoes = mysql_query("SELECT * FROM orcforracoes WHERE CodOrcamento = '$id'");
 while($r_forracoes = mysql_fetch_assoc($rs_forracoes)):
 	$CodPrecoFor			 	=	$r_forracoes['CodPreco'];
-
+/*
 	$rs_preco_for = mysql_query("SELECT precos.Valor, precos.UnidadesPorCaixa, unidadesmedida.Sigla FROM precos, unidadesmedida WHERE precos.CodUnidadeMedida = unidadesmedida.CodUnidadeMedida AND precos.CodPreco = '$CodPrecoFor'");
 	$r_preco_for = mysql_fetch_assoc($rs_preco_for);
 	$valorFor = $r_preco_for['Valor'];
-
+*/
 	$CodOrcForracao		 		=	$r_forracoes['CodOrcForracao'];
 	$QtdeM2		 				=	$r_forracoes['QtdeM2'];
 	$DistanciaPlantioFor 		=	$r_forracoes['DistanciaPlantio'];
@@ -15,7 +15,9 @@ while($r_forracoes = mysql_fetch_assoc($rs_forracoes)):
 	$ObservacoesFor				=	$r_forracoes['Observacoes'];
 	$LucroFor 					=	$r_forracoes['Lucro'];
 	$ValorTotalFor 				=	$r_forracoes['ValorTotal'];
-
+	$quantidade_mudas_m2		=	$r_forracoes['quantidade_mudas_m2'];
+	$ValorFor					= 	$r_forracoes['Valor'];
+/*
 	if($r_preco_for['Sigla'] == 'cx') {
 		switch ($DistanciaPlantioFor) {
 			case '10':
@@ -94,11 +96,11 @@ while($r_forracoes = mysql_fetch_assoc($rs_forracoes)):
 		$ValorTotalFor = ($valorFor*$QtdeM2);
 
 	}
-
+*/
 	mysql_query("INSERT INTO orcforracoes
-						(CodOrcamento, CodPreco, QtdeM2, QtdeCaixasMudas, DistanciaPlantio, Valor, ValorTotal, Observacoes, Lucro) 
+						(CodOrcamento, CodPreco, QtdeM2, QtdeCaixasMudas, DistanciaPlantio, quantidade_mudas_m2, Valor, ValorTotal, Observacoes, Lucro) 
 					VALUES
-						('$NovoOrcamento', '$CodPrecoFor', '$QtdeM2', '$QtdeCX', '$DistanciaPlantioFor', '$ValorFor', '$ValorTotalFor', '$ObservacoesFor', '$LucroFor')");
+						('$NovoOrcamento', '$CodPrecoFor', '$QtdeM2', '$QtdeCX', '$DistanciaPlantioFor', '$quantidade_mudas_m2', '$ValorFor', '$ValorTotalFor', '$ObservacoesFor', '$LucroFor')");
 endwhile;
 
 ?>

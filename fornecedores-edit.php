@@ -3,6 +3,8 @@ $id = (int)$_GET['id'];
 
 $rs = mysql_query("SELECT * FROM fornecedores WHERE CodFornecedor = '$id'");
 $r = mysql_fetch_assoc($rs);
+
+$cq = mysql_query("SELECT * FROM cidades order by Nome asc");
 ?>
 <div class="row-fluid">
     <div class="span12">
@@ -137,6 +139,15 @@ $r = mysql_fetch_assoc($rs);
                             </div>
                         </div>
                     </div>
+					
+					 <div class="form-row row-fluid">
+                        <div class="span12">
+                            <div class="row-fluid">
+                                <label class="form-label span2" for="produtos">Produtos:</label>
+                                <input class="span8 produtos" id="produtos" type="text" name="produtos" value="<?=$r['Produto']?>" />
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-row row-fluid">
                         <div class="span12">
@@ -191,7 +202,7 @@ $r = mysql_fetch_assoc($rs);
                             <input class="span6" id="complemento" type="text" name="complemento" value="<?=$r['Complemento']?>" />
                         </div>
                     </div>
-
+					
                     <div class="form-row row-fluid">
                         <div class="span3" style="margin-left:78px">
                             <div class="row-fluid">
@@ -200,8 +211,20 @@ $r = mysql_fetch_assoc($rs);
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-row row-fluid">
+					<div class="form-row row-fluid">
+						<div class="span3" style="margin-left:78px">
+							<div class="row-fluid">
+								<label class="form-label span4" for="cidade">Cidade:</label>
+								<select name="cidade" id="cidade" class="span4">
+                                        <?php while ($rc = mysql_fetch_assoc($cq)): ?>
+											<option <?php if ($rc['CodCidade'] == $r['CodCidade']){ echo 'selected="selected"'; }?> value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
+                                        <?php endwhile ?>
+                                    </select>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-row row-fluid">
                         <div class="span12">
                             <div class="page-header">
                                 <h4>Observações</h4>

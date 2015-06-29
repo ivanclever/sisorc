@@ -12,24 +12,29 @@ switch ($do) {
 
 		$_SESSION['fornecedores'] = $_POST;
 		$cnpj = soNum($cnpj);
-
-		$checkEmail = mysql_query("SELECT CodFornecedor FROM fornecedores WHERE Email = '$email'");
-		if(mysql_num_rows($checkEmail)>0) {
-			Erro('E-mail já consta no sistema'); Go();
+		
+		IF($email!=""){
+			$checkEmail = mysql_query("SELECT CodFornecedor FROM fornecedores WHERE Email = '$email'");
+			if(mysql_num_rows($checkEmail)>0) {
+				Erro('E-mail já consta no sistema'); Go();
+			}
 		}
-
-		$checkCnpj = mysql_query("SELECT CodFornecedor FROM fornecedores WHERE CNPJ = '$cnpj'");
-		if(mysql_num_rows($checkCnpj)>0) {
-			Erro('CNPJ já consta no sistema'); Go();
-		}
-
+		
+		IF($cnpj!=""){
+			$checkCnpj = mysql_query("SELECT CodFornecedor FROM fornecedores WHERE CNPJ = '$cnpj'");
+			if(mysql_num_rows($checkCnpj)>0) {
+				Erro('CNPJ já consta no sistema'); Go();
+			}
 		ValidaCNPJ($cnpj);
+		}
+
+		
 	
 		if (semErros()) {
 			if (mysql_query("INSERT INTO fornecedores
-					(Nome, CNPJ, FAX, Telefone, Celular, Email, Site, RazaoSocial, IE, CEP, Endereco, Numero, Complemento, Bairro, Contato, Observacoes, Ranking, BoxCEASA, BoxCEASABatata, status, DataCadastra)
+					(Nome, CNPJ, FAX, Telefone, Celular, Produto, Email, Site, RazaoSocial, IE, CEP, Endereco, Numero, Complemento, Bairro, CodCidade, Contato, Observacoes, Ranking, BoxCEASA, BoxCEASABatata, status, DataCadastra)
 				VALUES
-					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
+					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$produtos', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$cidade', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
 				Info('Fornecedor cadastrado com sucesso');
 				unset($_SESSION['fornecedores']);
 				Go('../?s=fornecedores');
@@ -74,12 +79,14 @@ switch ($do) {
 						FAX='$fax',
 						Telefone='$telefone',
 						Celular='$celular',
+						Produto='$produtos',
 						Email='$email',
 						Endereco='$logradouro',
 						Numero='$numero',
 						Complemento='$complemento',
 						CEP='$cep',
 						Bairro='$bairro',
+						CodCidade='$cidade',
 						Contato='$contatos',
 						Observacoes='$observacoes',
 						BoxCEASA='$ceasa',
@@ -87,7 +94,7 @@ switch ($do) {
 					WHERE
 						CodFornecedor = '$id'")) {
 				Info('Fornecedor alterado com sucesso');
-				Go('../?s=fornecedores');
+				Go();
 			} else {
 				Erro('Erro durante a alteração, tente novamente');
 			}
