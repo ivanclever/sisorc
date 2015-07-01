@@ -277,10 +277,16 @@ if (!array_key_exists($_GET['a'],$secoes)) $_GET['s'] = '';
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <?php include('css.php'); ?>
-
+<script type="text/javascript">
+            //adding load class to body and hide page
+            document.documentElement.className += 'loadstate';
+        </script>
     </head>
 
     <body>
+<!-- loading animation -->
+    <div id="qLoverlay"></div>
+    <div id="qLbar"></div>
 
     <?php include('header.php'); ?>
 

@@ -2,7 +2,7 @@
 $id = (int)$_GET['id'];
 $preco = (int)$_GET['preco'];
 
-$rs = mysql_query("SELECT precos.*, f.Nome AS nomeFornecedor, f.CodFornecedor, t.Descricao, c.nome, u.Sigla, DATE_FORMAT(precos.DataCadastra,'%Y/%m/%d') as dataCad
+$rs = mysql_query("SELECT precos.*, f.Nome AS nomeFornecedor, f.CodFornecedor, t.Descricao, c.Nome, u.Sigla, DATE_FORMAT(precos.DataCadastra,'%Y/%m/%d') as dataCad 
     FROM precos
     LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
     LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -20,24 +20,21 @@ $rs = mysql_query("SELECT precos.*, f.Nome AS nomeFornecedor, f.CodFornecedor, t
 if($preco !='') $cond = "AND precos.CodPreco <> '$preco'";
 
 if($preco != '') {
-    $rs_preco = mysql_query("SELECT precos.*, f.Nome AS nomeFornecedor, f.CodFornecedor, DATE_FORMAT(precos.DataCadastra,'%Y/%m/%d') as dataCad
+    $rs_preco = mysql_query("SELECT precos.*, f.Nome AS nomeFornecedor, f.CodFornecedor, DATE_FORMAT(precos.DataCadastra,'%Y/%m/%d') as dataCadm, c.Nome 
         FROM precos
         LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
         LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
         LEFT JOIN tipospodas AS t ON t.CodTipoPoda = precos.CodTipoPoda
         LEFT JOIN cores AS c ON c.CodCor = precos.CodCor
-        LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida
-        WHERE precos.CodProduto = p.CodProduto
-        AND precos.status = '1'
-        AND p.CodProduto = '$id'
-        AND precos.CodPreco = '$preco'
+        LEFT JOIN unidadesmedida AS u ON u.CodUnidadeMedida = precos.CodUnidadeMedida 
+        WHERE precos.CodProduto = p.CodProduto 
+        AND precos.status = '1' 
+        AND p.CodProduto = '$id' 
+        AND precos.CodPreco = '$preco' 
         ");
     $r_preco_current = mysql_fetch_assoc($rs_preco);
-
-	
-
-	
 	}
+	
 	$rs_cores = mysql_query("SELECT * FROM cores");
 	$rs_current_cores = mysql_query("SELECT * FROM cores");
 
@@ -49,7 +46,7 @@ if($preco != '') {
 
 	$rs_fornecedores = mysql_query("SELECT * FROM fornecedores ORDER BY Nome DESC");
 
-$rs_produtos = mysql_query("SELECT NomePopular,NomeCientifico FROM produtos WHERE CodProduto = '$id'");
+	$rs_produtos = mysql_query("SELECT NomePopular,NomeCientifico FROM produtos WHERE CodProduto = '$id'");
 	$r_produto = mysql_fetch_assoc($rs_produtos);
 ?>
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -93,7 +90,7 @@ $(function(){
         },
         function(retorno){
             alert("Valor do produto salvo com sucesso !");
-            alert(id);
+            //alert(id);
 			$('td#valor_'+id).html(retorno);
 			
 			var d1 = new Date();
@@ -446,6 +443,7 @@ $(function(){
                                 <td align="center">
                                     <a href="javascript:;" role="buttton" CodFornecedor="<?=$r['CodFornecedor']?>" id="<?=$r['CodPreco']?>"  title="Salvar produto" class="btn btn-success editPrecoValor"> <i class="icon-ok"></i> </a>
                                     <a href="action/precos.php?do=copy&id=<?=$r['CodPreco']?>" role="buttton" class="btn btn-success" title="Duplicar produto"  onclick="return confirm('Deseja realmente duplicar preço?');"> <i class="icon-plus-sign"></i> </a>
+									<a href="?s=precos-custo&id=<?=$id?>&preco=<?=$r['CodPreco']?>" class="btn btn-success" title="Editar"  onclick="return confirm('Deseja editar o produto?');"> <i class="icon-pencil"></i> </a>
 									
 									<a href="javascript:;" role="buttton" id="<?=$r['CodPreco']?>" class="btn btn-danger excluiProduto"  title="Desativar produto"> <i class="icon-trash"></i> </a>
                                     <!-- <a href="action/precos.php?do=exclui&id=<?=$r['CodProduto']?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i></a> -->

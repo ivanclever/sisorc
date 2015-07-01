@@ -35,7 +35,7 @@
 <script type="text/javascript" src="js/maxlength.js?<?=rand()?>"></script><!-- limit -->
 <script type="text/javascript" src="js/widgets.js?<?=rand()?>"></script><!-- Init plugins only for page -->
 <script type="text/javascript" src="js/jquery-gmaps-latlon-picker.js?<?=rand()?>"></script><!-- Init plugins only for page -->
-
+<script type="text/javascript" src="js/jquery-lazyload.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.del').click(function(){ if (confirm('Deseja remover este Registro ?')) return true; else return false; });
