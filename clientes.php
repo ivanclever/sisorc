@@ -1,5 +1,7 @@
 <?php
-$rs = mysql_query("SELECT * FROM clientes WHERE status = '1' ORDER BY DataCadastra DESC");
+$rs = mysql_query("SELECT F.*, c.CidUf FROM clientes f
+LEFT OUTER JOIN viCidades c ON f.CodCidade = c.CodCidade
+WHERE status = '1' ORDER BY f.DataCadastra DESC");
 ?>
 <div class="row-fluid">
 
@@ -29,6 +31,8 @@ $rs = mysql_query("SELECT * FROM clientes WHERE status = '1' ORDER BY DataCadast
                             <th>Residencial</th>
                             <th>Comercial</th>
                             <th>Celular</th>
+                            <th>Contato</th>
+                            <th>Cidade</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -40,6 +44,8 @@ $rs = mysql_query("SELECT * FROM clientes WHERE status = '1' ORDER BY DataCadast
                             <td width="100"><? if($r['TelefoneResidencial'] != '') echo $r['TelefoneResidencial']; else echo '-'; ?></td>
                             <td width="100"><? if($r['TelefoneComercial'] != '') echo $r['TelefoneComercial']; else echo '-'; ?></td>
                             <td width="100"><? if($r['TelefoneCelular'] != '') echo $r['TelefoneCelular']; else echo '-'; ?></td>
+                            <td width="250"><?=$r['Contato']?></td>
+                            <td width="250"><?=$r['CidUf']?></td>
                             <td align="center">
                                 <a class="btn mini blue" href="?s=clientes-edit&id=<?=$r['CodCliente']?>"><i class="icon-pencil"></i> Editar</a>
                                 <a href="action/clientes.php?do=exclui&id=<?=$r['CodCliente']?>" role="buttton" class="del btn btn-danger"> <i class="icon-trash"></i> Desativar</a>

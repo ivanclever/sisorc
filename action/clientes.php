@@ -22,12 +22,18 @@ switch ($do) {
 			$documento = $cnpj;
 		}
 		$data = DateToUs($data);
+		
+		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
+		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
+		
+		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
+		else {$Cod_Cidade = null;}
 
 		if (semErros()) {
 			if (mysql_query("INSERT INTO clientes
-					(Nome, CPF_CNPJ, FAX, TelefoneResidencial, TelefoneComercial, TelefoneCelular, Email, Endereco, Numero, Complemento, Bairro, Contato, Observacoes, DataNascimento, status, DataCadastra)
+					(Nome, CPF_CNPJ, FAX, TelefoneResidencial, TelefoneComercial, TelefoneCelular, Email, Endereco, Numero, Complemento, Bairro, Contato, Observacoes, DataNascimento, status, DataCadastra, CodCidade)
 				VALUES
-					('$nome', '$documento', '$fax', '$residencial', '$comercial', '$celular', '$email', '$logradouro', '$numero', '$complemento', '$bairro', '$contatos', '$observacoes', '$data', '$status', NOW())")) {
+					('$nome', '$documento', '$fax', '$residencial', '$comercial', '$celular', '$email', '$logradouro', '$numero', '$complemento', '$bairro', '$contatos', '$observacoes', '$data', '$status', NOW(), $Cod_Cidade)")) {
 				Info('Cliente cadastrado com sucesso');
 				unset($_SESSION['clientes']);
 				Go('../?s=clientes');
@@ -66,6 +72,12 @@ switch ($do) {
 		}
 		$data = DateToUs($data);
 		
+		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
+		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
+		
+		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
+		else {$Cod_Cidade = null;}
+		
 		if (semErros()) {
 			if (mysql_query("UPDATE clientes 
 					SET
@@ -82,6 +94,7 @@ switch ($do) {
 						Complemento='$complemento',
 						CEP='$cep',
 						Bairro='$bairro',
+						CodCidade='$Cod_Cidade',
 						Contato='$contatos',
 						Observacoes='$observacoes',
 						DataNascimento='$data'

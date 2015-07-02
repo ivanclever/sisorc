@@ -1,7 +1,9 @@
 <?php
 $id = (int)$_GET['id'];
 
-$rs = mysql_query("SELECT * FROM clientes WHERE CodCliente = '$id'");
+$rs = mysql_query("SELECT f.*, c.CidUf FROM 
+clientes f
+LEFT OUTER JOIN viCidades c ON f.CodCidade = c.CodCidade WHERE CodCliente = '$id'");
 $r = mysql_fetch_assoc($rs);
 
 echo soNum($r['FAX']);
@@ -167,8 +169,10 @@ $(function(){
 
                     <div class="form-row row-fluid">
                         <div class="span12">
+                            <div class="row-fluid">
                             <h3 class="span4" style="margin:15px 0 0 50px;">Endereço</h3>
                         </div>
+                    </div>
                     </div>
 
                     <div class="form-row row-fluid">
@@ -178,9 +182,9 @@ $(function(){
                                 <input class="span2 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
                                 <a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
                             </div>
-
                         </div>
                     </div>
+                    
                     <div class="form-row row-fluid">
                         <div class="span12">
                             <div class="row-fluid">
@@ -191,7 +195,7 @@ $(function(){
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span2" style="margin-left:80px">
+                        <div class="span3">
                             <label class="form-label span6" for="numero">Número:</label>
                             <input class="span4" id="numero" type="text" name="numero" value="<?=$r['Numero']?>" />
                         </div>
@@ -202,13 +206,34 @@ $(function(){
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span3" style="margin-left:78px">
+                        <div class="span3">
                             <div class="row-fluid">
                                 <label class="form-label span4" for="bairro">Bairro:</label>
                                 <input class="span8" id="bairro" type="text" name="bairro" value="<?=$r['Bairro']?>" />
                             </div>
                         </div>
                     </div>
+                    
+                   <div class="form-row row-fluid">
+						<div class="span3">
+							<div class="row-fluid">
+								<label class="form-label span4" for="cidade">Cidade:</label>
+                                <input class="span8" id="cidade" type="text" name="cidade" value="<?=$r['CidUf']?>" />
+                                <?php
+								 	//$cq = mysql_query("SELECT CodCidade, CidUf FROM viCidades WHERE  order by Nome asc");
+								?>
+                                
+								<!--<select name="cidade" id="cidade" class="span4">
+                                  <option value="">Selecione</option>
+                                 
+									<?php while ($rc = mysql_fetch_assoc($cq)): ?>
+											<option value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
+                                        <?php endwhile ?>
+                                    </select> -->
+							</div>
+						</div>
+					</div>
+                    
 
                     <div class="form-row row-fluid">
                         <div class="span12">
@@ -243,7 +268,6 @@ $(function(){
                        <button type="button" class="btn" onclick="location.href='?s=clientes'">Cancelar</button>
                     </div>
                 </form>
-            </div>
         </div><!-- End .box -->
     </div><!-- End .span12 -->
 </div><!-- End .row-fluid -->

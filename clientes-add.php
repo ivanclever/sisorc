@@ -201,7 +201,7 @@ $(function(){
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span2" style="margin-left:80px">
+                        <div class="span2">
                             <label class="form-label span6" for="numero">Número:</label>
                             <input class="span4" id="numero" type="text" name="numero" value="<?=$_SESSION['clientes']['numero']?>" />
                         </div>
@@ -212,13 +212,34 @@ $(function(){
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span3" style="margin-left:80px">
+                        <div class="span3">
                             <div class="row-fluid">
                                 <label class="form-label span4" for="bairro">Bairro:</label>
                                 <input class="span8" id="bairro" type="text" name="bairro" value="<?=$_SESSION['clientes']['bairro']?>" />
+                                
                             </div>
                         </div>
                     </div>
+                    
+                   <div class="form-row row-fluid">
+						<div class="span3">
+							<div class="row-fluid">
+								<label class="form-label span4" for="cidade">Cidade:</label>
+                                <input class="span8" id="cidade" type="text" name="cidade" />
+                                <?php
+								 	//$cq = mysql_query("SELECT CodCidade, CidUf FROM viCidades WHERE  order by Nome asc");
+								?>
+                                
+								<!--<select name="cidade" id="cidade" class="span4">
+                                  <option value="">Selecione</option>
+                                 
+									<?php while ($rc = mysql_fetch_assoc($cq)): ?>
+											<option value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
+                                        <?php endwhile ?>
+                                    </select> -->
+							</div>
+						</div>
+					</div>
 
                     <div class="form-row row-fluid">
                         <div class="span12">

@@ -1,7 +1,9 @@
 <?php
 $id = (int)$_GET['id'];
 
-$rs = mysql_query("SELECT * FROM fornecedores WHERE CodFornecedor = '$id'");
+$rs = mysql_query("SELECT f.*, c.CidUf FROM 
+fornecedores f
+LEFT OUTER JOIN viCidades c ON f.CodCidade = c.CodCidade WHERE CodFornecedor = '$id'");
 $r = mysql_fetch_assoc($rs);
 
 $cq = mysql_query("SELECT * FROM cidades order by Nome asc");
@@ -168,14 +170,14 @@ $cq = mysql_query("SELECT * FROM cidades order by Nome asc");
                     </div>           
 
                     <div class="form-row row-fluid">
-                        <div class="span12">
+                        <div class="span2" style="margin-left:80px">
                             <h3 class="span4" style="margin:15px 0 0 50px;">Endereço</h3>
                         </div>
                     </div>
 
                     <div class="form-row row-fluid">
                         <div class="span12">
-                            <div class="row-fluid">
+                            <div class="span2">
                                 <label class="form-label span2" for="cep">CEP:</label>
                                 <input class="span2 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
                                 <a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
@@ -184,7 +186,7 @@ $cq = mysql_query("SELECT * FROM cidades order by Nome asc");
                         </div>
                     </div>
                     <div class="form-row row-fluid">
-                        <div class="span12">
+                     	<div class="span2">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="logradouro">Logradouro:</label>
                                 <input class="span8" id="logradouro" type="text" name="logradouro" value="<?=$r['Endereco']?>" />
@@ -193,7 +195,7 @@ $cq = mysql_query("SELECT * FROM cidades order by Nome asc");
                     </div>
 
                     <div class="form-row row-fluid">
-                        <div class="span2" style="margin-left:80px">
+                        <div class="span2">
                             <label class="form-label span6" for="numero">Número:</label>
                             <input class="span4" id="numero" type="text" name="numero" value="<?=$r['Numero']?>" />
                         </div>
@@ -211,15 +213,24 @@ $cq = mysql_query("SELECT * FROM cidades order by Nome asc");
                             </div>
                         </div>
                     </div>
+                    
+                    
 					<div class="form-row row-fluid">
 						<div class="span3" style="margin-left:78px">
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
-								<select name="cidade" id="cidade" class="span4">
-                                        <?php while ($rc = mysql_fetch_assoc($cq)): ?>
-											<option <?php if ($rc['CodCidade'] == $r['CodCidade']){ echo 'selected="selected"'; }?> value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
+                                <input class="span8" id="cidade" type="text" name="cidade" value="<?=$r['CidUf']?>" />
+                                <?php
+								 	//$cq = mysql_query("SELECT CodCidade, CidUf FROM viCidades WHERE  order by Nome asc");
+								?>
+                                
+								<!--<select name="cidade" id="cidade" class="span4">
+                                  <option value="">Selecione</option>
+                                 
+									<?php while ($rc = mysql_fetch_assoc($cq)): ?>
+											<option value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
                                         <?php endwhile ?>
-                                    </select>
+                                    </select> -->
 							</div>
 						</div>
 					</div>

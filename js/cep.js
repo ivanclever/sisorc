@@ -16,8 +16,8 @@ function getEndereco() {
 							// troca o valor dos elementos
 							$("#logradouro").val(unescape(resultadoCEP["tipo_logradouro"])+": "+unescape(resultadoCEP["logradouro"]));
 							$("#bairro").val(unescape(resultadoCEP["bairro"]));
-							//$("#cidade").val(unescape(resultadoCEP["cidade"]));
-							//$("#estado").val(unescape(resultadoCEP["uf"]));
+							$("#cidade").val(unescape(resultadoCEP["cidade"]));
+							$("#estado").val(unescape(resultadoCEP["uf"]));
 							//$("#enderecoCompleto").show("slow");
 							$("#num").focus();
 							//document.getElementById("load").style.display = 'none';

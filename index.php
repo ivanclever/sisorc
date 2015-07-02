@@ -55,6 +55,16 @@ $secoes = array(
     'clientes-add'=>'clientes-add.php',
     'clientes-edit'=>'clientes-edit.php',
         'clientes-inativos'=>'clientes-inativos.php',
+		
+	//cidade
+	'cidade'=>'cidade.php',
+	'cidade-add'=>'cidade-add.php',
+	'cidade-edit'=>'cidade-edit.php',
+	
+	//Estado
+	'estado'=>'estado.php',
+	'estado-add'=>'estado-add.php',
+	'estado-edit'=>'estado-edit.php',
 
     //orcamentos
     'orcamentos'=>'orcamentos.php',
@@ -279,7 +289,7 @@ if (!array_key_exists($_GET['a'],$secoes)) $_GET['s'] = '';
         <?php include('css.php'); ?>
 <script type="text/javascript">
             //adding load class to body and hide page
-            document.documentElement.className += 'loadstate';
+            //document.documentElement.className += 'loadstate';
         </script>
     </head>
 

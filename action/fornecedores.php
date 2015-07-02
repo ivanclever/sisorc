@@ -28,13 +28,17 @@ switch ($do) {
 		ValidaCNPJ($cnpj);
 		}
 
+		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
+		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
 		
+		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
+		else {$Cod_Cidade = null;}
 	
 		if (semErros()) {
 			if (mysql_query("INSERT INTO fornecedores
 					(Nome, CNPJ, FAX, Telefone, Celular, Produto, Email, Site, RazaoSocial, IE, CEP, Endereco, Numero, Complemento, Bairro, CodCidade, Contato, Observacoes, Ranking, BoxCEASA, BoxCEASABatata, status, DataCadastra)
 				VALUES
-					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$produtos', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$cidade', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
+					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$produtos', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$Cod_Cidade', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
 				Info('Fornecedor cadastrado com sucesso');
 				unset($_SESSION['fornecedores']);
 				Go('../?s=fornecedores');
@@ -66,6 +70,12 @@ switch ($do) {
 		ValidaID($id,'CodFornecedor','fornecedores');
 		ValidaVazio($nome,'Campo nome inválido');
 		$data = DateToUs($data);
+		
+		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
+		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
+		
+		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
+		else {$Cod_Cidade = null;}
 
 		if (semErros()) {
 			if (mysql_query("UPDATE fornecedores 
@@ -86,7 +96,7 @@ switch ($do) {
 						Complemento='$complemento',
 						CEP='$cep',
 						Bairro='$bairro',
-						CodCidade='$cidade',
+						CodCidade='$Cod_Cidade',
 						Contato='$contatos',
 						Observacoes='$observacoes',
 						BoxCEASA='$ceasa',

@@ -1,5 +1,7 @@
 <?php
-$rs = mysql_query("SELECT * FROM fornecedores WHERE status = '1' ORDER BY DataCadastra DESC");
+$rs = mysql_query("SELECT F.*, c.CidUf FROM fornecedores f
+LEFT OUTER JOIN viCidades c ON f.CodCidade = c.CodCidade
+WHERE status = '1' ORDER BY f.DataCadastra DESC");
 ?>
 <div class="row-fluid">
 
@@ -30,6 +32,8 @@ $rs = mysql_query("SELECT * FROM fornecedores WHERE status = '1' ORDER BY DataCa
                             <th>Celular</th>
                             <th>E-mail</th>
                             <th>Ranking</th>
+                            <th>Contato</th>
+                            <th>Cidade</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -42,6 +46,8 @@ $rs = mysql_query("SELECT * FROM fornecedores WHERE status = '1' ORDER BY DataCa
                             <td width="100"><?=$r['Celular']?></td>
                             <td width="200"><?=$r['Email']?></td>
                             <td width="100"><?=$r['Ranking']?></td>
+                            <td width="250"><?=$r['Contato']?></td>
+                            <td width="250"><?=$r['CidUf']?></td>
                             <td align="center">
                                 <? /*?><a class="btn mini blue" href="?s=produtos-fornecedores&id=<?=$r['CodFornecedor']?>"><i class="icon-pencil"></i> Produtos</a><? */?>
                                 <a class="btn mini blue" href="?s=fornecedores-edit&id=<?=$r['CodFornecedor']?>"><i class="icon-pencil"></i> Editar</a>
