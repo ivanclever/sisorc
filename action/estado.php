@@ -16,7 +16,8 @@ switch ($do) {
 		$Nv_Id = $Linha['NvID'];
 		
 		if (semErros()) {
-			if (mysql_query("INSERT INTO  estados (CodEstado, Nome, UF) VALUES ('$Nv_Id', '$nome', '$uf')")) {
+			$Salvar = "INSERT INTO  estados (CodEstado, Nome, UF) VALUES ('$Nv_Id', '$nome', '$uf')";
+			if (mysql_query($Salvar)) {
 				Info('Cadastrado realizado com sucesso');
 				unset($_SESSION['estado']);
 				Go('../?s=estado');

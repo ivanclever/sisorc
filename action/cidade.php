@@ -15,8 +15,10 @@ switch ($do) {
 		$Linha = mysql_fetch_assoc($BuscaId);
 		$Nv_Id = $Linha['NvID'];
 		
+		$Salvar="INSERT INTO  cidades (CodCidade, Nome, CodEstado) VALUES ('$Nv_Id', '$nome', '$uf')";
+		
 		if (semErros()) {
-			if (mysql_query("INSERT INTO  cidades (CodCidade, Nome, CodEstado) VALUES ('$Nv_Id', '$nome', '$uf')")) {
+			if (mysql_query($Salvar)) {
 				Info('Cadastrado realizado com sucesso');
 				unset($_SESSION['cidade']);
 				Go('../?s=cidade');
@@ -27,7 +29,8 @@ switch ($do) {
 	
 	
 	case 'altera':
-		ValidaID($id,'CodCidade','cidade');
+//		ValidaID($id,'CodCidade','cidade');
+		$id = (int)$_GET['id'];
 		
 		if (semErros()) {
 			if (mysql_query("UPDATE cidades 
