@@ -1,5 +1,5 @@
 <?php
-$rs = mysql_query("SELECT F.*, c.CidUf FROM fornecedores f
+$rs = mysql_query("SELECT f.*, c.CidUf FROM fornecedores f
 LEFT OUTER JOIN viCidades c ON f.CodCidade = c.CodCidade
 WHERE status = '1' ORDER BY f.DataCadastra DESC");
 ?>
