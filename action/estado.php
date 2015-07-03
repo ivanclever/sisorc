@@ -8,10 +8,15 @@ $do = $_REQUEST['do'];
 
 switch ($do) {
 	case 'cadastra':
-
-		$_SESSION['estado'] = $_POST;
+	
+	$_SESSION['estado'] = $_POST;
+		
+		$BuscaId = mysql_query("SELECT (CodEstado+1) AS NvID FROM estados ORDER BY CodEstado DESC LIMIT 0,1");
+		$Linha = mysql_fetch_assoc($BuscaId);
+		$Nv_Id = $Linha['NvID'];
+		
 		if (semErros()) {
-			if (mysql_query("INSERT INTO  estados (Nome, UF) VALUES ('$nome', '$uf')")) {
+			if (mysql_query("INSERT INTO  estados (CodEstado, Nome, UF) VALUES ('$Nv_Id', '$nome', '$uf')")) {
 				Info('Cadastrado realizado com sucesso');
 				unset($_SESSION['estado']);
 				Go('../?s=estado');

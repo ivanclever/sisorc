@@ -11,8 +11,12 @@ switch ($do) {
 
 		$_SESSION['cidade'] = $_POST;
 		
+		$BuscaId = mysql_query("SELECT (CodCidade+1) AS NvID FROM cidades ORDER BY CodCidade DESC LIMIT 0,1");
+		$Linha = mysql_fetch_assoc($BuscaId);
+		$Nv_Id = $Linha['NvID'];
+		
 		if (semErros()) {
-			if (mysql_query("INSERT INTO  cidades (Nome, CodEstado) VALUES ('$nome', '$uf')")) {
+			if (mysql_query("INSERT INTO  cidades (CodCidade, Nome, CodEstado) VALUES ('$Nv_Id', '$nome', '$uf')")) {
 				Info('Cadastrado realizado com sucesso');
 				unset($_SESSION['cidade']);
 				Go('../?s=cidade');
