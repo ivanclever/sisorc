@@ -164,21 +164,21 @@
                         </div>
                     </div>
 
-                    <div class="form-row row-fluid">
-                        <div class="span2">
-                            <div class="row-fluid">
-                                <label class="form-label span2" for="cep">CEP:</label>
-                                <input class="span2 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
+                     <div class="form-row row-fluid">
+						<div class="span3">
+							<div class="row-fluid">
+                                <label class="form-label span4" for="cep">CEP:</label>
+                                <input class="span8 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
                                 <a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
                             </div>
 
                         </div>
                     </div>
                     <div class="form-row row-fluid">
-                        <div class="span2">
+                     	<div class="span3">
                             <div class="row-fluid">
-                                <label class="form-label span2" for="logradouro">Logradouro:</label>
-                                <input class="span8" id="logradouro" type="text" name="logradouro" value="<?=$r['Endereco']?>" />
+                                <label class="form-label span4" for="logradouro">Logradouro:</label>
+                                <input class="span6" id="logradouro" type="text" name="logradouro" value="<?=$r['Endereco']?>" />
                             </div>
                         </div>
                     </div>
@@ -193,21 +193,22 @@
                             <input class="span6" id="complemento" type="text" name="complemento" value="<?=$r['Complemento']?>" />
                         </div>
                     </div>
-
+					
                     <div class="form-row row-fluid">
-                        <div class="span12">
+                        <div class="span3">
                             <div class="row-fluid">
-                                <label class="form-label span2" for="bairro">Bairro:</label>
+                                <label class="form-label span4" for="bairro">Bairro:</label>
                                 <input class="span8" id="bairro" type="text" name="bairro" value="<?=$r['Bairro']?>" />
                             </div>
                         </div>
                     </div>
-					
+                    
+                    
 					<div class="form-row row-fluid">
-						<div class="span3" style="margin-left:78px">
+						<div class="span3">
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
-                                <input class="span8" id="cidade" type="text" name="cidade"/>
+                                <input class="span8" id="cidade" type="text" name="cidade" value="<?=$r['CidUf']?>" />
                                 <?php
 								 	//$cq = mysql_query("SELECT CodCidade, CidUf FROM viCidades WHERE  order by Nome asc");
 								?>
