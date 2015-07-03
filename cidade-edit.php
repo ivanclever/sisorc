@@ -1,7 +1,13 @@
-﻿<script type="text/javascript" src="js/jquery.min.js"></script>
+﻿<?php
+$id = (int)$_GET['id'];
+?>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <?php 
-	$Cons_Cid = mysql_query("SELECT CodEstado, Nome FROM Cidades WHERE CodCidade = '$id'");
+	$Cons_Cid = mysql_query("SELECT CodEstado, Nome FROM cidades WHERE CodCidade = '$id'");
 	$Exe_Cid = mysql_fetch_assoc($Cons_Cid);
+	
+	//print_r($Exe_Cid);
 ?>
 <div class="row-fluid">
     <div class="span12">
@@ -10,12 +16,13 @@
             <div class="title">
                 <h4>
                     <span class="icon16 icomoon-icon-equalizer-2"></span>
-                    <span>Adicionar Cidade</span>
+                    <span>Editar Cidade - <?php echo $Exe_Cid['Nome'];?></span>
                 </h4>
             </div>
             <div class="content">
                 <form class="form-horizontal" action="action/cidade.php" method="post">
                     <input type="hidden" name="do" value="altera" />
+					<input type="hidden" name="id" value="<?php echo $id;?>" />
 					<div class="form-row row-fluid">
                         <div class="span12">
                             <div class="row-fluid">
@@ -36,7 +43,7 @@
 										  while($Exe_Cons = mysql_fetch_assoc($Cons_Est))
 										  {
 									 ?>
-                                        <option <? if ($Cons_Est['CodEstado'] == $Exe_Cons["CodEstado"]) echo 'selected="selected"'; ?> value="<?php $Exe_Cons["CodEstado"];?>"><?php echo $Exe_Cons["UF"];?></option>
+                                        <option <? if ($Exe_Cons['CodEstado'] == $Exe_Cid["CodEstado"]) echo 'selected="selected"'; ?> value="<?php echo $Exe_Cons["CodEstado"];?>"><?php echo $Exe_Cons["UF"];?></option>
                                       <?php } ?>
                                     </select>
                                 </div>
