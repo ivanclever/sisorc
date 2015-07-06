@@ -38,7 +38,7 @@
                                     <li><a href="?s=revestimentos"><span class="icon16 icomoon-icon-arrow-right-2"></span>Revestimentos</a></li>
                                     <li><a href="?s=unidades"><span class="icon16 icomoon-icon-arrow-right-2"></span>Unidades</a></li>
                                     <li><a href="?s=cidade"><span class="icon16 icomoon-icon-arrow-right-2"></span>Cidades</a></li>
-                                    <li><a href="?s=estado"><span class="icon16 icomoon-icon-arrow-right-2"></span>Estados</a></li>
+                                    <!-- <li><a href="?s=estado"><span class="icon16 icomoon-icon-arrow-right-2"></span>Estados</a></li> -->
                                 </ul>
                             </li>
                         </ul>

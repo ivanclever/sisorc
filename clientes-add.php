@@ -1,32 +1,3 @@
-<?php
-$estados = array (
-    "Acre"=>    "AC", 
-    "Alagoas"=> "AL",
-    "Amapá"=>   "AP", 
-    "Amazonas"=>    "AM", 
-    "Bahia"=>   "BA", 
-    "Ceará"=>   "CE", 
-    "Distrito Federal"=>    "DF", 
-    "Espírito Santo"=>  "ES", 
-    "Maranhão"=>    "MA", 
-    "Mato Grosso"=> "MT", 
-    "Mato Grosso do Sul"=>  "MS", 
-    "Minas Gerais"=>    "MG", 
-    "Pará"=>    "PA", 
-    "Paraíba"=> "PB", 
-    "Paraná"=>  "PR", 
-    "Pernambuco"=>  "PE", 
-    "Piauí"=>   "PI", 
-    "Rio de Janeiro"=>  "RJ", 
-    "Rio Grande do Norte"=> "RN", 
-    "Rio Grande do Sul"=>   "RS", 
-    "Rondônia"=>    "RO", 
-    "Rorâima"=> "RR", 
-    "São Paulo"=>   "SP", 
-    "Santa Catarina"=>  "SC", 
-    "Sergipe"=> "SE", 
-    "Tocantins"=>   "TO");
-?>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -43,6 +14,26 @@ $(function(){
     });
 });
 </script>
+<script type="text/javascript">
+		$(function(){
+			$('#cod_estados').change(function(){
+				if( $(this).val() ) {
+					$('#cod_cidades').hide();
+					$('.carregando').show();
+					$.getJSON('cidades.ajax.php?search=',{cod_estados: $(this).val(), ajax: 'true'}, function(j){
+						var options = '<option value=""></option>';	
+						for (var i = 0; i < j.length; i++) {
+							options += '<option value="' + j[i].cod_cidades + '">' + j[i].nome + '</option>';
+						}	
+						$('#cod_cidades').html(options).show();
+						$('.carregando').hide();
+					});
+				} else {
+					$('#cod_cidades').html('<option value="">– Escolha um estado –</option>');
+				}
+			});
+		});
+		</script>
 <div class="row-fluid">
     <div class="span12">
         <div class="box">
@@ -186,7 +177,7 @@ $(function(){
                             <div class="row-fluid">
                                 <label class="form-label span2" for="cep">CEP:</label>
                                 <input class="span2 cep" id="cep" type="text" name="cep" value="<?=$_SESSION['clientes']['cep']?>" />
-                                <a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
+                                <!-- <a href="#" class="btn" onclick="return getEndereco()">Consultar</a> -->
                             </div>
 
                         </div>
@@ -224,19 +215,27 @@ $(function(){
                    <div class="form-row row-fluid">
 						<div class="span3">
 							<div class="row-fluid">
-								<label class="form-label span4" for="cidade">Cidade:</label>
-                                <input class="span8" id="cidade" type="text" name="cidade" />
-                                <?php
-								 	//$cq = mysql_query("SELECT CodCidade, CidUf FROM viCidades WHERE  order by Nome asc");
-								?>
-                                
-								<!--<select name="cidade" id="cidade" class="span4">
+                            <?php $cq = mysql_query("SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
+                               <label class="form-label span4" for="nmestado">Estado:</label>
+                                <select name="cod_estados" id="cod_estados" class="span4">
                                   <option value="">Selecione</option>
-                                 
-									<?php while ($rc = mysql_fetch_assoc($cq)): ?>
-											<option value="<?php echo $rc['CodCidade'];?>"><?php echo $rc['Nome'];?></option>
-                                        <?php endwhile ?>
-                                    </select> -->
+                                 <?php while ($rc = mysql_fetch_assoc($cq)): ?>
+                                	<option value="<?php echo $rc['CodEstado'];?>"><?php echo $rc['UF'];?></option>
+                           	    <?php endwhile ?>
+                                </select>
+                              </div>
+                              </div>
+                              </div>
+                      
+                      <div class="form-row row-fluid">
+						<div class="span3">
+							<div class="row-fluid">
+                                
+								<label class="form-label span4" for="cidade">Cidade:</label>
+                                <select class="span6" name="cod_cidades" id="cod_cidades">
+                                    <option value="">-- Escolha um estado --</option>
+                                </select>
+                           
 							</div>
 						</div>
 					</div>
