@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require('../util/conn.php');
 require('../util/util.php');
 require('../util/auth.php');
