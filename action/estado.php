@@ -28,7 +28,7 @@ switch ($do) {
 	
 	
 	case 'altera':
-		ValidaID($id,'CodCidade','cidade');
+		//ValidaID($id,'CodCidade','cidades');
 		
 		if (semErros()) {
 			if (mysql_query("UPDATE estados 
@@ -36,7 +36,7 @@ switch ($do) {
 						Nome = '$nome',
 						UF = '$uf'
 					WHERE
-						CodCidade = '$id'")) {
+						CodEstado = '$id'")) {
 				Info('Cadastro alterado com sucesso');
 				Go('../?s=estado');
 			} else {

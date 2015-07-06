@@ -1,5 +1,5 @@
-﻿<script type="text/javascript" src="js/jquery.min.js"></script>
-<?php 
+﻿<?php 
+	$id = (int)$_GET['id'];
 	$Cons_Cid = mysql_query("SELECT Nome, UF FROM estados WHERE CodEstado = '$id'");
 	$Exe_Cid = mysql_fetch_assoc($Cons_Cid);
 ?>
