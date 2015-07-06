@@ -38,7 +38,7 @@ switch ($do) {
 			if (mysql_query("INSERT INTO fornecedores
 					(Nome, CNPJ, FAX, Telefone, Celular, Produto, Email, Site, RazaoSocial, IE, CEP, Endereco, Numero, Complemento, Bairro, CodCidade, Contato, Observacoes, Ranking, BoxCEASA, BoxCEASABatata, status, DataCadastra)
 				VALUES
-					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$produtos', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$Cod_Cidade', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
+					('$nome', '$cnpj', '$fax', '$telefone', '$celular', '$produtos', '$email', '$site', '$razao_social', '$insc', '$cep', '$logradouro', '$numero', '$complemento', '$bairro', '$cod_cidades', '$contatos', '$observacoes', '$ranking', '$ceasa', '$ceasa_batata', '$status', NOW())")) {
 				Info('Fornecedor cadastrado com sucesso');
 				unset($_SESSION['fornecedores']);
 				Go('../?s=fornecedores');
@@ -96,7 +96,7 @@ switch ($do) {
 						Complemento='$complemento',
 						CEP='$cep',
 						Bairro='$bairro',
-						CodCidade='$Cod_Cidade',
+						CodCidade='$cod_cidades',
 						Contato='$contatos',
 						Observacoes='$observacoes',
 						BoxCEASA='$ceasa',

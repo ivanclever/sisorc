@@ -33,7 +33,7 @@ switch ($do) {
 			if (mysql_query("INSERT INTO clientes
 					(Nome, CPF_CNPJ, FAX, TelefoneResidencial, TelefoneComercial, TelefoneCelular, Email, Endereco, Numero, Complemento, Bairro, Contato, Observacoes, DataNascimento, status, DataCadastra, CodCidade)
 				VALUES
-					('$nome', '$documento', '$fax', '$residencial', '$comercial', '$celular', '$email', '$logradouro', '$numero', '$complemento', '$bairro', '$contatos', '$observacoes', '$data', '$status', NOW(), $Cod_Cidade)")) {
+					('$nome', '$documento', '$fax', '$residencial', '$comercial', '$celular', '$email', '$logradouro', '$numero', '$complemento', '$bairro', '$contatos', '$observacoes', '$data', '$status', NOW(), $cod_cidades)")) {
 				Info('Cliente cadastrado com sucesso');
 				unset($_SESSION['clientes']);
 				Go('../?s=clientes');
@@ -94,7 +94,7 @@ switch ($do) {
 						Complemento='$complemento',
 						CEP='$cep',
 						Bairro='$bairro',
-						CodCidade='$Cod_Cidade',
+						CodCidade='$cod_cidades',
 						Contato='$contatos',
 						Observacoes='$observacoes',
 						DataNascimento='$data'
