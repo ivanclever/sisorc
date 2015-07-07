@@ -10,7 +10,7 @@ require('util/util.php');
 
 	$cidades = array();
 
-	$sql = "SELECT CodCidade, Nome
+	$sql = "SELECT NULL CodCidade, ' -Selecione-' Nome UNION SELECT CodCidade, Nome
 			FROM cidades
 			WHERE CodEstado=$cod_estados
 			ORDER BY Nome";

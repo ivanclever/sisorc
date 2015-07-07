@@ -104,7 +104,7 @@ $(function(){
                         <div class="span12">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="nome">Nome</label>
-                                <input class="span8" id="nome" type="text" name="nome" value="<?=$r['Nome']?>" />
+                                <input class="span8" id="nome" type="text" name="nome" value="<?=stripslashes($r['Nome'])?>" />
                             </div>
                         </div>
                     </div>
@@ -240,7 +240,7 @@ $(function(){
                   <div class="form-row row-fluid">
 						<div class="span3">
 							<div class="row-fluid">
-                            <?php $cq = mysql_query("SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
+                            <?php $cq = mysql_query("SELECT NULL CodEstado, ' -Selecione-' UF UNION SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
                                <label class="form-label span4" for="nmestado">Estado:</label>
                                 <select name="cod_estados" id="cod_estados" class="span4">
                                  <?php while ($rc = mysql_fetch_assoc($cq)): ?>
@@ -256,6 +256,7 @@ $(function(){
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
+                                	<option value="NULL">-- Escolha uma cidade --</option>
                                 	<option value="<?php echo $r['CodCidade'];?>"><?php echo $r['Cidade'];?></option>
                                 </select>
                            

@@ -13,6 +13,8 @@ switch ($do) {
 		$_SESSION['clientes'] = $_POST;
 		$cpf = soNum($cpf);
 		$cnpj = soNum($cnpj);
+		
+		$nome = addslashes($nome);
 
 		if($tipo == '0') {
 			//validaCPF($cpf,'Campo CPF inválido');
@@ -22,12 +24,7 @@ switch ($do) {
 			$documento = $cnpj;
 		}
 		$data = DateToUs($data);
-		
-		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
-		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
-		
-		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
-		else {$Cod_Cidade = null;}
+		if($cod_cidades ==  NULL) {$cod_cidades = '';}
 
 		if (semErros()) {
 			if (mysql_query("INSERT INTO clientes
@@ -72,11 +69,8 @@ switch ($do) {
 		}
 		$data = DateToUs($data);
 		
-		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
-		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
-		
-		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
-		else {$Cod_Cidade = null;}
+		$nome = addslashes($nome);
+		if($cod_cidades ==  NULL) {$cod_cidades = '';}
 		
 		if (semErros()) {
 			if (mysql_query("UPDATE clientes 

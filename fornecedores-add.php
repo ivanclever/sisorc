@@ -229,10 +229,10 @@
 					<div class="form-row row-fluid">
 						<div class="span3">
 							<div class="row-fluid">
-                            <?php $cq = mysql_query("SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
+                            <?php $cq = mysql_query("SELECT NULL CodEstado, ' -Selecione-' UF UNION SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
                                <label class="form-label span4" for="nmestado">Estado:</label>
                                 <select name="cod_estados" id="cod_estados" class="span4">
-                                  <option value="">Selecione</option>
+                                  
                                  <?php while ($rc = mysql_fetch_assoc($cq)): ?>
                                 	<option value="<?php echo $rc['CodEstado'];?>"><?php echo $rc['UF'];?></option>
                            	    <?php endwhile ?>
@@ -247,7 +247,7 @@
                                 
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
-                                    <option value="">-- Escolha um estado --</option>
+                                    <option value="NULL">-- Escolha um estado --</option>
                                 </select>
                            
 							</div>

@@ -13,6 +13,10 @@ switch ($do) {
 		$_SESSION['fornecedores'] = $_POST;
 		$cnpj = soNum($cnpj);
 		
+		$nome = addslashes($nome);
+		$razao_social = addslashes($razao_social);
+		
+		
 		IF($email!=""){
 			$checkEmail = mysql_query("SELECT CodFornecedor FROM fornecedores WHERE Email = '$email'");
 			if(mysql_num_rows($checkEmail)>0) {
@@ -27,13 +31,7 @@ switch ($do) {
 			}
 		ValidaCNPJ($cnpj);
 		}
-
-		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
-		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
-		
-		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
-		else {$Cod_Cidade = null;}
-	
+	if($cod_cidades ==  NULL) {$cod_cidades = '';}
 		if (semErros()) {
 			if (mysql_query("INSERT INTO fornecedores
 					(Nome, CNPJ, FAX, Telefone, Celular, Produto, Email, Site, RazaoSocial, IE, CEP, Endereco, Numero, Complemento, Bairro, CodCidade, Contato, Observacoes, Ranking, BoxCEASA, BoxCEASABatata, status, DataCadastra)
@@ -67,16 +65,18 @@ switch ($do) {
 		Go();
 	break;
 	case 'altera':
+	
+		$nome = addslashes($nome);
+		$razao_social = addslashes($razao_social);
+		
+		
 		ValidaID($id,'CodFornecedor','fornecedores');
 		ValidaVazio($nome,'Campo nome inválido');
 		$data = DateToUs($data);
 		
-		$Cons_cidade = mysql_query("SELECT CodCidade FROM viCidades WHERE Nome = '$cidade'");
-		$Exe_Cons = mysql_fetch_assoc($Cons_cidade);
-		
-		if(($Exe_Cons["CodCidade"] != null) and ($Exe_Cons["CodCidade"] != "")){ $Cod_Cidade = $Exe_Cons["CodCidade"];}
-		else {$Cod_Cidade = null;}
+		if($cod_cidades ==  NULL) {$cod_cidades = '';}
 
+						
 		if (semErros()) {
 			if (mysql_query("UPDATE fornecedores 
 					SET

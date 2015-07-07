@@ -50,8 +50,8 @@ $r = mysql_fetch_assoc($rs);
                                 <label class="form-label span2" for="status">Ativo ?</label>
                                 <div class="span4">
                                     <select name="status" id="status" class="span4">
-                                        <option <? if ($r['status'] == '1') echo 'selected="selected"'; ?> value="1">Sim</option>
-                                        <option <? if ($r['status'] == '0') echo 'selected="selected"'; ?> value="0">Não</option>
+                                        <option <?php if ($r['status'] == '1') echo 'selected="selected"'; ?> value="1">Sim</option>
+                                        <option <?php if ($r['status'] == '0') echo 'selected="selected"'; ?> value="0">Não</option>
                                     </select>
                                 </div>
                             </div>
@@ -64,9 +64,9 @@ $r = mysql_fetch_assoc($rs);
                                 <label class="form-label span2" for="ranking">Ranking</label>
                                 <div class="span4">
                                     <select name="ranking" id="ranking" class="span4">
-                                        <option <? if ($r['Ranking'] == 'A') echo 'selected="selected"'; ?> value="A">A</option>
-                                        <option <? if ($r['Ranking'] == 'B') echo 'selected="selected"'; ?> value="B">B</option>
-                                        <option <? if ($r['Ranking'] == 'C') echo 'selected="selected"'; ?> value="C">C</option>
+                                        <option <?php if ($r['Ranking'] == 'A') echo 'selected="selected"'; ?> value="A">A</option>
+                                        <option <?php if ($r['Ranking'] == 'B') echo 'selected="selected"'; ?> value="B">B</option>
+                                        <option <?php if ($r['Ranking'] == 'C') echo 'selected="selected"'; ?> value="C">C</option>
                                     </select>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@ $r = mysql_fetch_assoc($rs);
                         <div class="span12">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="nome">Nome</label>
-                                <input class="span8" id="nome" type="text" name="nome" value="<?=$r['Nome']?>" />
+                                <input class="span8" id="nome" type="text" name="nome" value="<?=stripslashes($r['Nome'])?>" />
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ $r = mysql_fetch_assoc($rs);
                         <div class="span12">
                             <div class="row-fluid">
                                 <label class="form-label span2" for="razao_social">Razão Social:</label>
-                                <input class="span8" id="razao_social" type="text" name="razao_social" value="<?=$r['RazaoSocial']?>" />
+                                <input class="span8" id="razao_social" type="text" name="razao_social" value="<?=stripslashes($r['RazaoSocial'])?>" />
                             </div>
                         </div>
                     </div>
@@ -239,7 +239,16 @@ $r = mysql_fetch_assoc($rs);
 					 <div class="form-row row-fluid">
 						<div class="span3">
 							<div class="row-fluid">
-                            <?php $cq = mysql_query("SELECT CodEstado, UF FROM estados ORDER BY UF"); ?>
+                            <?php $cq = mysql_query("SELECT NULL CodEstado, ' -Selecione-' UF UNION SELECT CodEstado, UF FROM estados ORDER BY UF"); 
+							if ($r['CodEstado'] == '')
+							{
+								$estado = NULL;
+							}
+							else
+							{
+								$estado = $r['CodEstado'];
+							}
+							?>
                                <label class="form-label span4" for="nmestado">Estado:</label>
                                 <select name="cod_estados" id="cod_estados" class="span4">
                                  <?php while ($rc = mysql_fetch_assoc($cq)): ?>
@@ -255,6 +264,7 @@ $r = mysql_fetch_assoc($rs);
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
+                                	<option value="NULL">-- Escolha uma cidade --</option>
                                 	<option value="<?php echo $r['CodCidade'];?>"><?php echo $r['Cidade'];?></option>
                                 </select>
                            
