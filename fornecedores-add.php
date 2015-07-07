@@ -191,7 +191,7 @@
 							<div class="row-fluid">
                                 <label class="form-label span4" for="cep">CEP:</label>
                                 <input class="span8 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
-                                <!-- <a href="#" class="btn" onclick="return getEndereco()">Consultar</a> -->
+								<a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
                             </div>
 
                         </div>
@@ -247,7 +247,6 @@
                                 
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
-                                    <option value="NULL">-- Escolha um estado --</option>
                                 </select>
                            
 							</div>

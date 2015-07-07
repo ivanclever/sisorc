@@ -203,7 +203,7 @@ $(function(){
                             <div class="row-fluid">
                                 <label class="form-label span2" for="cep">CEP:</label>
                                 <input class="span2 cep" id="cep" type="text" name="cep" value="<?=$r['CEP']?>" />
-                                <!--<a href="#" class="btn" onclick="return getEndereco()">Consultar</a>-->
+                                <a href="#" class="btn" onclick="return getEndereco()">Consultar</a>
                             </div>
                         </div>
                     </div>
@@ -256,7 +256,6 @@ $(function(){
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
-                                	<option value="NULL">-- Escolha uma cidade --</option>
                                 	<option value="<?php echo $r['CodCidade'];?>"><?php echo $r['Cidade'];?></option>
                                 </select>
                            

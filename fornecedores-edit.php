@@ -264,7 +264,6 @@ $r = mysql_fetch_assoc($rs);
 							<div class="row-fluid">
 								<label class="form-label span4" for="cidade">Cidade:</label>
                                 <select class="span6" name="cod_cidades" id="cod_cidades">
-                                	<option value="NULL">-- Escolha uma cidade --</option>
                                 	<option value="<?php echo $r['CodCidade'];?>"><?php echo $r['Cidade'];?></option>
                                 </select>
                            
