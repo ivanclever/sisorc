@@ -73,7 +73,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     if($row['Poda'] !='') $poda = $row['Poda']; else $poda = '-';
     if($row['Sigla'] !='') $sigla = $row['Sigla']; else $sigla = '-';
     if($row['Porte'] !='') $porte = $row['Porte']; else $porte = '-';
-    if($row['Diametro'] !='') $diametro = $row['DiametroTronco']; else $diametro = '-';
+    if($row['DiametroTronco'] !='') $diametro = $row['DiametroTronco']; else $diametro = '-';
     if($row['AlturaTronco'] !='') $altura = $row['AlturaTronco']; else $altura = '-';
     if($row['Valor'] !='') $valor = $row['Valor']; else $valor = '-';
     if($row['Unidades'] !='') $unidades = $row['Unidades']; else $unidades = '-';
