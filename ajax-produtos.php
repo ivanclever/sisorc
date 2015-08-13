@@ -62,7 +62,7 @@ if($total_pages!=0)
     //     GROUP BY precos.CodPreco
     //     ORDER BY $sidx $sord LIMIT $start , $limit";
 
-    $SQL = "SELECT precos.*, p.NomePopular,p.Codigo, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*, p.NomePopular, p.Codigo, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
             FROM precos
             LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
             LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -76,7 +76,7 @@ if($total_pages!=0)
             ORDER BY $sidx $sord LIMIT $start , $limit";
 else
 
-    $SQL = "SELECT precos.*,p.Codigo, p.NomePopular, p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
+    $SQL = "SELECT precos.*,p.Codigo, p.NomePopular,  p.NomeCientifico, f.Nome as NFornecedor, DATE_FORMAT( precos.DataCadastra,'%d/%m/%Y') as dataCad, u.Sigla, c.Nome Cor
         FROM precos
         LEFT JOIN produtos AS p ON p.CodProduto = precos.CodProduto
         LEFT JOIN fornecedores AS f ON f.Codfornecedor = precos.Codfornecedor
@@ -101,7 +101,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     if($row['Poda'] !='') $poda = $row['Poda']; else $poda = '-';
     if($row['Sigla'] !='') $sigla = $row['Sigla']; else $sigla = '-';
     if($row['Porte'] !='') $porte = $row['Porte']; else $porte = '-';
-    if($row['Diametro'] !='') $diametro = $row['DiametroTronco']; else $diametro = '-';
+    if($row['DiametroTronco'] !='') $diametro = $row['DiametroTronco']; else $diametro = '-';
     if($row['AlturaTronco'] !='') $altura = $row['AlturaTronco']; else $altura = '-';
     if($row['Valor'] !='') $valor = $row['Valor']; else $valor = '-';
     if($row['UnidadesPorCaixa'] !='') $unidades = $row['UnidadesPorCaixa']; else $unidades = '-';

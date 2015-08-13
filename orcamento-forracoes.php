@@ -117,23 +117,28 @@ $(function(){
                     <input class="span6" id="qm2" type="text" name="qm2" />
                 </div>
             </div>
-            <div class="span4">
+            <div class="span3">
                 <div class="row-fluid">
-                    <label class="form-label span6" for="valor">Valor</label>
+                    <label class="form-label span4" for="valor">Valor</label>
                     <input class="span6" id="valor" type="text" name="valor" />
                 </div>
             </div>
-            <div class="span4">
+            <div class="span3">
                 <div class="row-fluid">
                     <label class="form-label span6" for="observacoes">Observações</label>
                     <input class="span6" id="observacoes" type="text" name="observacoes" />
                 </div>
             </div>
             
-            <div class="span4">
+            <div class="span3">
                 <div class="row-fluid">
-                    <label class="form-label span6" for="lucro">Lucro</label>
+                    <label class="form-label span4" for="lucro">Lucro</label>
                     <input class="span6" id="lucro" type="text" name="lucro" />
+                </div>
+            </div>
+			<div class="span3">
+                <div class="row-fluid">
+                    
                 </div>
             </div>
             <div style="clear:both;"></div><br />
