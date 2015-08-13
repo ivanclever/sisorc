@@ -441,7 +441,7 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                         <thead>
                                           <tr style="border-bottom:1px solid;">
                                             <th align="left">Cód</th>
-                                            <th align="left">Fornecedor</th>
+                                            
                                             <th align="left">Modelo</th>
                                             <th align="left">QTDE</th>
                                             <th align="left">Cor</th>
@@ -460,7 +460,6 @@ $rs_vasos = mysql_query("SELECT orcvasos.Codigo, vasos.CodVaso, vasos.Modelo, or
                                           <?php while ($r_vasos = mysql_fetch_assoc($rs_vasos)): ?>
                                             <tr style="border-bottom:1px dashed #666666;">
                                                 <td width="50"><?=$r_vasos['Codigo']?></td>
-                                                <td width="150"><?=$r_vasos['nomeFornecedor']?></td>
                                                 <td width="150"><?=$r_vasos['Modelo']?></td>
                                                 <td width="40"><?=$r_vasos['Quantidade']?></td>
                                                 <td width="80"><?=$r_vasos['nomeCor']?></td>
